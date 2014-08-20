@@ -3,7 +3,7 @@ require 'rubygems'
 require 'sqlite3'
 #require 'sinatra'
 require 'sinatra/base'
-require 'sinatra/reloader' #if development?
+#require 'sinatra/reloader' #if development?
 require "sinatra/json"
 require "json/ext"
 require_relative 'utils'
@@ -18,7 +18,7 @@ class App < Sinatra::Base
   db = SQLite3::Database.new "./de.sqlite3"
   set :db, db 
 	set :session, true
-	set :port, ENV["PORT"]||3000
+	#set :port, ENV["PORT"]||3000
 	set :root, File.join(File.dirname(__FILE__), '..')
 	set :public_folder, File.dirname(__FILE__) + '/assets'
 	#enable :static
