@@ -1,0 +1,31 @@
+/*Global*/
+html,
+body{
+	font-size: 15px;
+	height: 100%;
+}
+
+body {
+	font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	background: #FFFFFF;
+	margin: 0px;
+	padding: 0px;
+	text-rendering: optimizedLegibility;
+	min-width: 320px;
+	color: #555555
+}
+
+/* For all segment */
+.ui.page.grid.segment {
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+/*Context*/
+.context.segment {
+  -webkit-background-size: auto;
+	background-size: 190px;
+}
+/*Footer*/
+
+

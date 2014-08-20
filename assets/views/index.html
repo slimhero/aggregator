@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>beta@</title>
+    <meta charset="utf-8"></meta>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"></meta>
+    <!-- Scripts and libs -->
+		<!-- Semantic UI -->
+    <link rel="stylesheet" type="text/css" href="semantic/packaged/css/semantic.css">
+	  <script type="text/javascript" src="semantic/packaged/javascript/semantic.js"></script>
+		<!-- Product cust -->
+    <link rel="stylesheet" type="text/css" href="product/css/product.css">
+		<!-- Templates -->
+		<script type="text/x-handlebars" id="app">
+			<!-- Header-->
+    	<div class="ui page grid segment">
+    		<!-- Menu -->
+    		<div class="ui secondary pointing menu">
+      		<a class="item active"><i class="home icon"></i>Home(beta@)</a>
+      		<div class="right menu">
+      			<a class="ui item">Log in</a>
+      		</div>
+    		</div>
+    	</div>
+    
+    	<!-- Content -->
+    	<div class="ui page grid segment context">
+      	<div class="column" id="content">
+        	This is the  yield  page.
+      	</div>
+    	</div>
+
+    	<!-- Footer -->
+    	<div class="ui page grid segment footer">
+      	<div class="column">
+      	</div>
+    	</div>
+
+		</script>
+		<script type="text/x-handlebars" id="tables">
+			<table class="ui celled table small segment">
+  			<thead>
+    			<tr>
+      			<th>Flat Count</th>
+      			<th>Description</th>
+      			<th>Price</th>
+      			<th>Phone</th>
+    			</tr>
+  			</thead>
+				<tbody>
+				{ {collection} } 
+    		<tr>
+					<td>Id</td>
+					<td>Code</td>
+      		<td>0</td>
+      		<td>+4444444444</td>
+				</tr>
+				{ {/collection} }
+    		<tr>
+      		<td>3</td>
+      		<td>Denied</td>
+      		<td>130</td>
+      		<td>+5555555555</td>
+    		</tr>
+  		</tbody>
+		</table> 
+		</script>
+</head> 
+  <body>
+    <!-- Handlebars(templates) -->
+    <script type="text/javascript" src="handlebars/handlebars-v1.3.0.js"></script>
+		<!-- Underscore-->
+		<script type="text/javascript" src="underscore/underscore.js"></script>
+		<!-- jQuery -->
+    <script type="text/javascript" src="jquery/jquery-2.1.1.min.js"></script>
+    
+		<script type="text/javascript" src="backbone/backbone.js"></script>
+		<script type="text/javascript" src="backbone/backbone-localstorage.js"></script>
+		<script type="text/javascript" src="thorax/thorax.js"></script> 		
+    <!-- Product cust -->
+		<script type="text/javascript" src="product/javascript/app.js"></script>
+	</body>
+</html>
