@@ -2,5 +2,5 @@
 
 # require ::File.expand_path('../config/environment',  __FILE__)
 # require './app.rb'
-require File.dirname(__FILE__) + '/app'
+require './app'
 run Sinatra::Application
