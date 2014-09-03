@@ -12,6 +12,7 @@
     <script src="myLB/lib/jquery-pjax/jquery.pjax.js"></script>
     <script src="underscore/underscore-min.js"></script>
     <script src="myLB/js/settings.js"> </script>
+    <script src="myLB/lib/bootstrap/tooltip.js"> </script>
 </head>
 <body>
 <div class="single-widget-container">
@@ -20,30 +21,33 @@
             <h4>Login to your account</h4>
         </header>
         <div class="body">
-            <form class="no-margin"
-                  action="index.html" method="get">
+            <form class="no-margi2n"
+							action="/api/auth"
+							method="post"
+							data-confirm="Ready to submit?"
+							role="form">
                 <fieldset>
                     <div class="form-group no-margin">
-                        <label for="email" >Email</label>
+                        <label for="login" >Login</label>
 
                         <div class="input-group input-group-lg">
                                 <span class="input-group-addon">
                                     <i class="eicon-user"></i>
                                 </span>
-                            <input id="email" type="email" class="form-control input-lg"
-                                   placeholder="Your Email">
+                            <input id="login" name="login" type="text" class="form-control input-lg"
+                                   placeholder="Your login">
                         </div>
 
                     </div>
 
                     <div class="form-group">
-                        <label for="password" >Password</label>
+                        <label for="pwd" >Password</label>
 
                         <div class="input-group input-group-lg">
                                 <span class="input-group-addon">
                                     <i class="fa fa-lock"></i>
                                 </span>
-                            <input id="password" type="password" class="form-control input-lg"
+                            <input id="pwd" name="pwd" type="password" class="form-control input-lg"
                                    placeholder="Your Password">
                         </div>
 
@@ -54,7 +58,9 @@
                         <span class="small-circle"><i class="fa fa-caret-right"></i></span>
                         <small>Sign In</small>
                     </button>
-                    <div class="forgot"><a class="forgot" href="login.html#">Forgot Username or Password?</a></div>
+										<div class="forgot">
+											<a class="forgot" href="login.html#">Forgot Username or Password?</a>
+										</div>
                 </div>
             </form>
         </div>

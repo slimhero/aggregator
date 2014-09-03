@@ -12,12 +12,14 @@ require_relative 'rest/pointtime'
 require_relative 'rest/journal'
 require_relative 'rest/data'
 require_relative 'rest/state'
+require_relative 'rest/auth'
 require_relative 'db/query'
 
 class App < Sinatra::Base
   db = SQLite3::Database.new "./de.sqlite3"
   set :db, db 
-	set :session, true
+	#set :session, true
+	enable :sessions
 	#set :port, ENV["PORT"]||3000
 	set :root, File.join(File.dirname(__FILE__), '..')
 	set :public_folder, File.dirname(__FILE__) + '/assets'
@@ -32,8 +34,12 @@ class App < Sinatra::Base
 	use RestAPI::Journal
 	use RestAPI::Data
 	use RestAPI::State
+	use RestAPI::Auth
+
+	#session[:islogin] = false
 
 	get "/" do
+		session[:islogin] = false
 		#File.read( File.dirname(__FILE__)+"/assets/views/index.html")
 		File.read( File.dirname(__FILE__)+"/assets/views/login_my.html")
 	end
@@ -43,8 +49,22 @@ class App < Sinatra::Base
 		File.read( File.dirname(__FILE__)+"/assets/views/points_my.html")
 	end
 
-	get "/user" do
-		File.read( File.dirname(__FILE__)+"/assets/views/result_my.html")
+	get "/user/:id" do
+		usr_small = session[:usr_small]
+
+		if session[:islogin] && usr_small != nil && usr_small[:id].to_i == params[:id].to_i
+		 	puts "session!"	
+			File.read( File.dirname(__FILE__)+"/assets/views/result_my.html")
+		else
+			puts "redirect!"
+			redirect "/"
+		end
+	end
+
+	get "/logout" do
+		session[:islogin] = false
+		session[:usr_small] = nil
+		redirect "/"
 	end
 
 	get "/api/rows" do

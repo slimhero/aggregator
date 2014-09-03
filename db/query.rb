@@ -72,7 +72,22 @@ module DB
 	STRUCT[:STATE] = Struct.new( :id, :name )
 	QUERY[:STATE_Q] = "SELECT v.ID, v.DESC FROM V_STATE v;"
 	QUERY[:STATE_Q_ID] = "SELECT v.ID, v.DESC FROM V_STATE v WHERE v.ID = ?;"
-		
+	
+  #######################################
+	# AUTH                                #
+	#######################################
+	STRUCT[:AUTH_S] = Struct.new( :id, :fio )
+	QUERY[:AUTH_Q_S] = "SELECT v.ID, v.FIO FROM V_SMALL_USER v WHERE v.LOGIN = ? AND v.PWD = ?;"
+	QUERY[:AUTH_I] = "INSERT INTO RAUsers u( LOGIN, NAME, SECONDNAME,  LASTNAME, PWD ) VALUES( ?,?,?,?,?);"
+	
+  #######################################
+	# WP                                  #
+	#######################################
+	STRUCT[:USER_WP] = Struct.new( :id, :wp )
+	QUERY[:USER_WP_LIST] = "SELECT v.ID, v.WP FROM V_User_wp v WHERE v.USERID = ?;"
+	QUERY[:USER_WP_COUNT] = "SELECT COUNT(v.ID) FROM V_User_wp v WHERE v.USERID = ?;"
+
+
 	#######################################
 	# Interfaces                          #
 	#######################################
