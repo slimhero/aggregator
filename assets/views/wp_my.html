@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>realty Helper - WorkPlace</title>
+    <link href="myLB/css/application.css" rel="stylesheet">
+    <link rel="shortcut icon" href="img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta charset="utf-8">
+    <script src="jquery/jquery-2.1.1.min.js"> </script>
+    <script src="myLB/lib/jquery-pjax/jquery.pjax.js"></script>
+    <script src="underscore/underscore-min.js"></script>
+    <script src="myLB/js/settings.js"> </script>
+    <script src="myLB/lib/bootstrap/tooltip.js"> </script>
+</head>
+<body>
+<div class="single-widget-container">
+    <section class="widget login-widget">
+        <header class="text-align-center">
+            <h4>Choose your workplace</h4>
+        </header>
+        <div class="body">
+            <form class="no-margi2n"
+							action="/api/auth"
+							method="post"
+							data-confirm="Ready to submit?"
+							role="form">
+                <fieldset>
+                	<div class="form-group no-margin">
+										<label for="wp" >WorkPlace</label>
+										<!-- <div class="input-group input-group-lg"> -->
+											<div class="btn-group btn-input col-md-6 pull-right" id="wp">
+												<button class="btn btn-default btn-xs" type="button">1        *        </button>
+  											<button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle" type="button">
+													<span class="caret"></span>
+    											<span class="sr-only">Toggle Dropdown</span>
+												</button>
+  											<ul id="wplist" role="menu" class="dropdown-menu">
+													<li><a class="stateMenu" data="1" href="#">Новый</a></li>
+													<li><a class="stateMenu" data="2" href="#">В работе</a></li>
+													<li><a class="stateMenu" data="4" href="#">Обработан</a></li>
+													<li><a class="stateMenu" data="5" href="#">Фейк</a></li>
+												</ul>
+											</div>
+											<!-- </div> -->
+									</div>
+                </fieldset>
+                <div class="form-actions">
+                	<button type="submit" class="btn btn-block btn-lg btn-danger">
+                  	<span class="small-circle"><i class="fa fa-caret-right"></i></span>
+                    <small>Set</small>
+									</button>
+									<div class="forgot">
+									</div>	
+                </div>
+            </form>
+        </div>
+    </section>
+	</div>
+	<script src="/myLB/lib/bootstrap/dropdown.js"></script>
+</body>
+</html>

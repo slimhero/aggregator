@@ -44,6 +44,15 @@ class App < Sinatra::Base
 		File.read( File.dirname(__FILE__)+"/assets/views/login_my.html")
 	end
 
+	get "/wp" do
+		#usr_small = session[:usr_small]
+		#if session[:islogin] && usr_small != nil && usr_small[:id].to_i == params[:id].to_i
+			File.read( File.dirname(__FILE__)+"/assets/views/wp_my.html")
+		#else
+		#	redirect "/"
+		#end
+	end
+
 	get "/admin" do
 		#File.read( File.dirname(__FILE__)+"/assets/views/admin.html")
 		File.read( File.dirname(__FILE__)+"/assets/views/points_my.html")
