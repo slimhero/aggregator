@@ -84,7 +84,9 @@ module DB
 	# WP                                  #
 	#######################################
 	STRUCT[:USER_WP] = Struct.new( :id, :wp )
+	QUERY[:WP_LIST] = "SELECT v.ID, v.NAME AS WP FROM V_WorkPlace v;"
 	QUERY[:USER_WP_LIST] = "SELECT v.ID, v.WP FROM V_User_wp v WHERE v.USERID = ?;"
+	QUERY[:USER_WP_Q] = "SELECT v.ID, v.WP FROM V_User_wp v WHERE v.USERID = ? AND v.ID = ?;"
 	QUERY[:USER_WP_COUNT] = "SELECT COUNT(v.ID) FROM V_User_wp v WHERE v.USERID = ?;"
 
 

@@ -13,6 +13,7 @@ require_relative 'rest/journal'
 require_relative 'rest/data'
 require_relative 'rest/state'
 require_relative 'rest/auth'
+require_relative 'rest/wp'
 require_relative 'db/query'
 
 class App < Sinatra::Base
@@ -35,6 +36,7 @@ class App < Sinatra::Base
 	use RestAPI::Data
 	use RestAPI::State
 	use RestAPI::Auth
+	use RestAPI::WP
 
 	#session[:islogin] = false
 
