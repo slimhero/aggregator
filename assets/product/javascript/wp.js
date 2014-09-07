@@ -33,10 +33,10 @@ app.WPView = Backbone.View.extend({
     this.count = this.count + 1;
 		if( this.count = 1 ){
 			$(document).on('click', '.dropdown-menu li a', function () {
-    		console.log("Selected Option:"+$(this).text());
+    		//console.log("Selected Option:"+$(this).text());
 				$("#wpChoosenLabel").text( $(this).text() );
 				$("#wpChoosenLabel").attr( "value", $(this).attr( "data" ) );
-				$("#wpwidget form").attr( "action", '/api/setwp/' + $(this).attr( "data" ) )
+				$("#wpwidget form").attr( "action", '/api/setwp/' + $(this).attr( "data" ) );
 			});
 		};
 	}
