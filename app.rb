@@ -39,7 +39,8 @@ class App < Sinatra::Base
 	use RestAPI::WP
 
 	get "/" do
-		session[:islogin] = false
+		session.clear
+		#session[:islogin] = false
 		#File.read( File.dirname(__FILE__)+"/assets/views/index.html")
 		File.read( File.dirname(__FILE__)+"/assets/views/login_my.html")
 	end
@@ -82,6 +83,7 @@ class App < Sinatra::Base
 		session[:islogin] = false
 		session[:usr_small] = nil
 		session[:wp] = nil
+		session.clear
 		redirect "/"
 	end
 =begin
