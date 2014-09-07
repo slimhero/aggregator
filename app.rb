@@ -38,8 +38,6 @@ class App < Sinatra::Base
 	use RestAPI::Auth
 	use RestAPI::WP
 
-	#session[:islogin] = false
-
 	get "/" do
 		session[:islogin] = false
 		#File.read( File.dirname(__FILE__)+"/assets/views/index.html")
@@ -47,25 +45,33 @@ class App < Sinatra::Base
 	end
 
 	get "/wp" do
-		#usr_small = session[:usr_small]
-		#if session[:islogin] && usr_small != nil && usr_small[:id].to_i == params[:id].to_i
+		usr_small = session[:usr_small]
+		if session[:islogin] && usr_small != nil 
 			File.read( File.dirname(__FILE__)+"/assets/views/wp_my.html")
-		#else
-		#	redirect "/"
-		#end
+		else
+			redirect "/"
+		end
 	end
 
+=begin
 	get "/admin" do
 		#File.read( File.dirname(__FILE__)+"/assets/views/admin.html")
 		File.read( File.dirname(__FILE__)+"/assets/views/points_my.html")
 	end
+=end
 
 	get "/user/:id" do
 		usr_small = session[:usr_small]
 
 		if session[:islogin] && usr_small != nil && usr_small[:id].to_i == params[:id].to_i
-		 	puts "session!"	
-			File.read( File.dirname(__FILE__)+"/assets/views/result_my.html")
+		 	puts "session!"
+		  if session[:wp] == 3	
+			  File.read( File.dirname(__FILE__)+"/assets/views/result_my.html")
+			elsif session[:wp] == 1
+				File.read( File.dirname(__FILE__)+"/assets/views/points_my.html")
+			elsif session[:wp] == 2
+				File.read( File.dirname(__FILE__)+"/assets/views/users_my.html")
+			end
 		else
 			puts "redirect!"
 			redirect "/"
@@ -75,9 +81,10 @@ class App < Sinatra::Base
 	get "/logout" do
 		session[:islogin] = false
 		session[:usr_small] = nil
+		session[:wp] = nil
 		redirect "/"
 	end
-
+=begin
 	get "/api/rows" do
 		Q_ROWS_EXT = "SELECT v.ID,v.OPERDATE,v.STATE,v.SOURCE,v.ROOMS,v.PHONE,v.DESC,v.PRICE FROM V_ROWS_EXT v;"
 		results = db.execute( Q_ROWS_EXT )
@@ -89,6 +96,7 @@ class App < Sinatra::Base
 		results = db.execute( Q_FIELDS )
 		json results
 	end
+=end
 	# !!!!
 	run! if app_file == $0
 end
