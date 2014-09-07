@@ -2,17 +2,21 @@
 <html>
 <head>
     <title>realty Helper - WorkPlace</title>
-    <link href="myLB/css/application.css" rel="stylesheet">
+    <link href="/myLB/css/application.css" rel="stylesheet">
     <link rel="shortcut icon" href="img/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <meta charset="utf-8">
-    <script src="jquery/jquery-2.1.1.min.js"> </script>
-    <script src="myLB/lib/jquery-pjax/jquery.pjax.js"></script>
-    <script src="underscore/underscore-min.js"></script>
-    <script src="myLB/js/settings.js"> </script>
-    <script src="myLB/lib/bootstrap/tooltip.js"> </script>
+    <script src="/jquery/jquery-2.1.1.min.js"> </script>
+    <script src="/myLB/lib/jquery-pjax/jquery.pjax.js"></script>
+    <script src="/underscore/underscore-min.js"></script>
+    <script src="/myLB/js/settings.js"> </script>
+		<script src="/myLB/lib/bootstrap/tooltip.js"> </script>
+		<script type="text/x-handlebars" id="wpitem"> 
+			<li><a class="stateMenu" data="{{id}}" href="#">{{wp}}</a></li>
+		</script>
+
 </head>
 <body>
 <div class="single-widget-container">
@@ -20,30 +24,24 @@
         <header class="text-align-center">
             <h4>Choose your workplace</h4>
         </header>
-        <div class="body">
+        <div class="body" id="wpwidget">
             <form class="no-margi2n"
-							action="/api/auth"
+							action="/api/wp"
 							method="post"
 							data-confirm="Ready to submit?"
 							role="form">
                 <fieldset>
                 	<div class="form-group no-margin">
 										<label for="wp" >WorkPlace</label>
-										<!-- <div class="input-group input-group-lg"> -->
-											<div class="btn-group btn-input col-md-6 pull-right" id="wp">
-												<button class="btn btn-default btn-xs" type="button">1        *        </button>
-  											<button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle" type="button">
-													<span class="caret"></span>
-    											<span class="sr-only">Toggle Dropdown</span>
-												</button>
-  											<ul id="wplist" role="menu" class="dropdown-menu">
-													<li><a class="stateMenu" data="1" href="#">Новый</a></li>
-													<li><a class="stateMenu" data="2" href="#">В работе</a></li>
-													<li><a class="stateMenu" data="4" href="#">Обработан</a></li>
-													<li><a class="stateMenu" data="5" href="#">Фейк</a></li>
-												</ul>
-											</div>
-											<!-- </div> -->
+										<div class="btn-group btn-group-sm btn-input col-md-8 pull-right" id="wp">
+											<button class="btn btn-default" id="wpChoosenLabel" type="button">Choose you workplace</button>
+  										<button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+												<span class="caret"></span>
+    										<span class="sr-only">Toggle Dropdown</span>
+											</button>
+  										<ul id="wplist" role="menu" class="dropdown-menu">
+											</ul>
+										</div>
 									</div>
                 </fieldset>
                 <div class="form-actions">
@@ -58,6 +56,10 @@
         </div>
     </section>
 	</div>
+	<script src="/handlebars/handlebars-v1.3.0.js"></script>
+	<script src="/underscore/underscore-min.js"></script>
+	<script src="/backbone/backbone.js"></script>
 	<script src="/myLB/lib/bootstrap/dropdown.js"></script>
+  <script src="/product/javascript/wp.js"> </script>
 </body>
 </html>

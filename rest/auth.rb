@@ -32,7 +32,7 @@ module RestAPI
 						# Check wp
 						App.db.execute( App.query[:USER_WP_COUNT], data[0] ) do |count|
 							if count[0] > 1 
-								redirect "/user/wp/#{data[0]}"
+								redirect "/wp"
 							else
 								redirect "/user/#{data[0]}"
 							end
