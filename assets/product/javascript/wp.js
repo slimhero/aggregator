@@ -28,7 +28,6 @@ app.WPView = Backbone.View.extend({
 	  _.each( collection.models, this.setItem, this );
 	},
 	setItem: function(item){
-		console.log( item );
 		this.$el.find("#wplist").append( this.template( item.toJSON() ) );
     this.count = this.count + 1;
 		if( this.count = 1 ){

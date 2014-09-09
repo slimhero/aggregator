@@ -56,8 +56,8 @@
 	<li><a href="#" data="{{id}}" class="stateMenu" >{{name}}</a></li>
 </script>
 
-<script type="text/x-handlebars" id="filters">
-	
+<script type="text/x-handlebars" id="wp">
+	<option data="{{id}}">{{wp}}</option>
 </script>
 </head>
 <body class="background-dark">
@@ -69,13 +69,29 @@
         <div class="navbar col-md-10">
         	<ul class="nav navbar-nav navbar-right pull-right">
           	<li class="hidden-xs">
-							<a id="settings" 
+							<a id="wps" 
 									href="special_search.html#"
-									data-placement="bottom"
-									data-toggle="popover"
+									class="dropdown-toggle" 
+									data-toggle="dropdown"
                   title=" Settings">
               	<i class="fa fa-cog"></i>
-              </a>
+							</a>
+							<ul id="wps-menu" class="dropdown-menu messages" role="menu">
+								<li role="presentation">
+									<form id="wpform" class="no-margin" method="post" role="form">
+										<fieldset style="padding:15px;">
+											<label for="wp_list">WorkPlace</label>
+											<select id="wp_list" class="form-control"></select>	
+										</fieldset>
+										<div class="form-actions">
+											<div class="pull-right">
+												<button class="btn btn-xs btn-default" id="btnCancel">Cancel</button>
+												<button class="btn btn-xs btn-danger" type="submit">Set</button>
+											</div>
+										</div>
+									</form>
+								</li>
+							</ul>
             </li>
             <li class="hidden-xs">
 							<a href="/logout">

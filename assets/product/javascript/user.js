@@ -254,10 +254,49 @@ app.FullView = Backbone.View.extend({
 });
 
 
+
+app.WPModel = Backbone.Model.extend({
+});
+
+app.collWP = Backbone.Collection.extend({
+	model: app.WPModel,
+	url: "/api/wp"
+});
+
+app.WPView = Backbone.View.extend({
+	el: "#wp_list",
+	template: Handlebars.compile( $("#wp").html() ),
+	initialize: function(){
+	  this.collection.on("sync", this.setItems, this );
+		this.collection.fetch();
+	},
+	setItems: function(collection){
+	  this.$el.find("option").remove().end();
+		_.each( collection.models, this.setItem, this );
+	},
+	setItem: function(item){
+	  this.$el.append( this.template( item.toJSON() ) );
+	}
+});
+
+
+
 $(document).ready(function() {
 	try{
 		console.log("q");
 		app.full = new app.FullView();
+		app.collwp = new app.collWP();
+
+		// get list of wp
+		$("#wps").on("click", function(){
+			app.wp = new app.WPView({ collection: app.collwp });
+		});
+
+		// change wp
+		$('select#wp_list').change( function(){
+		  var idx = $(this).find('option:selected').attr('data');
+			$("#wpform").attr( "action", ( "/api/setwp/" + idx ) );
+		}); 
 	}
 	catch(e){
 		console.log( e.message );
