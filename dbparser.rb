@@ -52,7 +52,7 @@ module RestAPI
 						v = ""
 						vv = []
 						# Set state
-						@hash[:STATE] = 0
+						@hash[:STATE] = 1
 						# System user
 						@hash[:USER] = 1
 						# Source

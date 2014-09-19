@@ -78,6 +78,8 @@ class App < Sinatra::Base
 		redirect "/"
 	end
 
+	#s = Scheduler.new
+	#s.run
 	# !!!!
 	run! if app_file == $0
 end
