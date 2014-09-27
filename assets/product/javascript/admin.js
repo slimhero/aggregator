@@ -18,26 +18,57 @@ app.PointModel = Backbone.Model.extend({
 	url: function(){
 	  return ("/api/points/" + this.id);
 	}
-	/*,
-	initialize: function(){
-		if( !this.id ){
-			this.id = this.cid;
-		} 
-	}
-	*/
 });
 
+app.PointTimeModel = Backbone.Model.extend({
+	defaults:{
+		id: 1,
+		timeplan: "10:00",
+		type: 1
+	},
+	url: function(){
+		return ("/api/time/" + this.id);
+	}
+});
+
+app.JournalModel = Backbone.Model.extend({
+	url: function(){
+		return ("/api/journal/" + this.id);
+	}
+});
 
 app.collPoints = Backbone.Collection.extend({
 	model: app.PointModel,
-	url: '/api/points'
+	url: '/api/points',
+	//reset: true,
+	initialize: function(){
+	  this.bind("add", this.addOne, this);
+		this.bind("remove", this.removeOne, this );
+		this.bind("reset", this.resetOne, this );
+	},
+	addOne: function( model, collection, options){
+	  console.log( "add " );
+	  console.log( model );
+	},
+	removeOne: function( model, collection, options){
+		console.log( "remove " );	
+		console.log( model );	
+	},
+  resetOne: function( model, collection, options ){
+		console.log( "reset "  );
+		console.log( model );
+	}
+});
+
+app.collJournal = Backbone.Collection.extend({
+	model: app.JournalModel,
+	url: '/api/journal'
 });
 
 
 app.PointView = Backbone.View.extend({
-	el: '#points',
+	el: '#accordion2',
 	//model: app.PointModel,
-	collection: new app.collPoints(),
 	template: Handlebars.compile( $("#point").html() ),
 	//initialize: function(){
 	  //this.listenTo(this.model, 'change', this.render);
@@ -45,42 +76,21 @@ app.PointView = Backbone.View.extend({
 		//this.render();
 	//},
 	events: {
-	  //"click #btn
-		"click #btnEdit": "editModel", //
-		"click #btnDel": "deleteModel",
-		"click #btnSave": "saveModel",         //
-		"click #btnCancel": "cancelModel"
+		//'click .btnEdit': 'editModel',
+		'click #btnDel': 'deleteModel'//,
+		//"click #btnSave": "saveModel",
+		//"click #btnCancel": "cancelModel"
 	},
 	//
 	initialize: function(){
-	  this.collection.fetch();
-		this.listenTo(this.collection, 'add', this.addOne);
-	  
-		if( !this.model.get("id") ){
-		  this.model.set({ id: this.model.cid });
+	  if( !this.model.get('id') ){
+		  this.model.set({ id: this.model.cid })
 		}
-		_.bindAll(this, 'cleanup');
-		this.listenTo(this.model, 'change', this.render);
+		//_.bindAll(this, 'cleanup');
+		//this.listenTo(this.model, 'change', this.render);
     this.listenTo(this.model, 'destroy', this.destroy);
-	},
-	cleanup: function(){
-	  this.undelegateEvents();
-    $(this.el).empty();
-	},
-
-	add: function(){
-	  this.collection.each( 
-		    //this.collection, 
-				function(item){
-					this.addOne(item);
-				}, 
-				this
-		);
-	},
-
-	addOne: function(item){
-	  var m = item.toJSON();
-		this.$el.append( this.template( m ) );
+    //this.listenTo(this.collection, 'reset', this.destroy);
+	  this.model.on('destroy', this.remove, this ); 
 	},
 
 	render: function(){
@@ -91,21 +101,36 @@ app.PointView = Backbone.View.extend({
 	renderF: function( that ){
 		var m = that.model.toJSON();
 		var temp = that.template( m );
-		//this.$el.html( temp );
-		if( $("div #panel" + that.model.attributes['id']).length == 0 ){
-			this.$el.append( temp );
+		var id = that.model.attributes['id'];
+		that.id = "#panel" + id;
+		that.btnEdit = that.id + " .btnEdit#btnEdit";
+		that.btnSave = that.id + " .btnSave#btnSave";
+		that.btnTest = that.id + " .btnTest#btnTest";
+		that.btnDel  = that.id + " .btnDel#btnDel";
+		that.btnCancel = that.id + " .btn#btnCancel";
+		that.show_mode = that.id + " .show_mode";
+		that.edit_mode = that.id + " .edit_mode";
+		that.editorAction = that.id + " .editorAction";
+		that.editor = "editor" + id;
+		that.label = that.id + " form #label";
+	  that.point = that.id + " form #point";
+		that.code = that.id + " form #code";
+	  that.login = that.id + " form #login";
+		that.pwd = that.id + " form #pwd";
+
+		if( $( that.id ).length == 0 ){
+			that.$el.append( temp );
 		}
 		else{
-		  $(temp).replaceAll( $("div #panel"+that.model.attributes['id']) );
+		  $(temp).replaceAll( $( that.id ) );
 		}
 
-		var editor = ace.edit(("editor"+that.model.attributes['id']));
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/ruby");
-		editor.setReadOnly(true);
-		//$(that.$el.find( ".btnEdit#btnEdit" )).on("click", {entity: that}, that.editModel );
-		//$(that.$el.find( ".btnSave#btnSave" )).on("click", {entity: that}, that.saveModel );
-		//$(that.$el.find( ".btnTest#btnTest" )).on("click", {entity: that}, that.test );
+		that.setEditorProp( that.editor, true );
+
+		$(that.$el.find( that.btnEdit )).on("click", {entity: that}, that.editModel );
+		$(that.$el.find( that.btnSave )).on("click", {entity: that}, that.saveModel );
+		$(that.$el.find( that.btnTest )).on("click", {entity: that}, that.test );
+		$(that.$el.find( that.btnCancel )).on("click", {entity: that}, that.cancelModel );
 	},
 
 	test: function(e){
@@ -114,72 +139,83 @@ app.PointView = Backbone.View.extend({
 		$( "#testModal #textarea").text( "" );
 		$( "#testModal #textarea").html( "" );
 		$( "#testModal #textarea").append( "START...\n" );
-		var z = {parser: (ace.edit(("editor"+id)).getSession().getValue())};
+		var z = {
+		 		parser: (ace.edit(("editor"+id)).getSession().getValue()),
+				code: that.$el.find( that.code ).val(),
+				label: that.$el.find( that.label ).val()
+		};
 		$.post( 
 		    "api/points/test/"+id, 
-				//{parser: (ace.edit(("editor"+id)).getSession().getValue())},
-				//z,
 				JSON.stringify(z),
 				'json'
 		)
 		.done(function( data ){
-			if( data.error ){
+			if( data.message ){
 				$( "#testModal #textarea").html( "" );
-				$( "#testModal #textarea").append( "<h4>" + _.escape( data.error ) + "\n</h4>" );
-				$( "#testModal #textarea").append( "<p>" + _.escape( data.trace ) + "</p>" );
+				$( "#testModal #textarea").append( "<h4>" + _.escape( data.message ) + "\n</h4>" );
+				if( $.isArray( data.trace ) ){
+				  _.each( data.trace, function(item){
+				  	$( "#testModal #textarea").append( "<p>" + _.escape( item ) + "</p>" );
+					});
+				}
+				else{
+				  $( "#testModal #textarea").append( "<p>" + _.escape( data.trace ) + "</p>" );
+			  }
 			}
 		})
 		.fail(function( data ){
-		  alert( data );
+			$( "#testModal #textarea").html( "" );
+			$( "#testModal #textarea").append( "<h4>" + data.status +" - " + data.statusText + "</h4>" );
+			var err = data.responseText ;
+      var header = $( err ).find("div#header");
+			$( "#testModal #textarea").append( header.html() );
+			var trace = $( err ).find("div#backtrace");
+			$( "#testModal #textarea").append( trace.html() );
+			alert( data );
+			
 		});
 	},
-	editModel: function(e){
-/*
+	editModel: function(e){	
 		that = e.data.entity;
-	  that.$(".show_mode").addClass('hidden');
-		//that.$("#btnEdit").addClass('hidden');
-		//that.$("#btnDel").addClass('hidden');
-		that.$(".btnTest#btnTest").removeClass('hidden');
-		that.$(".editorAction").removeClass('hidden');
-	  that.$(".edit_mode").removeClass('hidden');
+	  that.$( that.show_mode).addClass('hidden');
+		that.$( that.btnTest ).removeClass('hidden');
+		that.$( that.editorAction).removeClass('hidden');
+	  that.$( that.edit_mode).removeClass('hidden');
+		that.setEditorProp( that.editor, false );
+	},
 
-		var editor = ace.edit(("editor"+that.model.attributes["id"]));
+  setEditorProp: function( selector, boolReadOnly ){
+		var editor = ace.edit( selector );
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/ruby");
-		editor.setReadOnly(false);
-*/
-		this.$el(".show_mode").addClass('hidden');
-		that.$el(".btnTest#btnTest").removeClass('hidden');
-		that.$el(".editorAction").removeClass('hidden');
-	  that.$el(".edit_mode").removeClass('hidden');
-
+		editor.setReadOnly( boolReadOnly );
 	},
-	cancelModel: function(){
-	  this.$(".show_mode").removeClass('hidden');
-		this.$("#btnEdit").removeClass('hidden');
-		this.$(".editorAction").addClass('hidden');
-		this.$("#btnDel").removeClass('hidden');
-	  this.$(".edit_mode").addClass('hidden');
-		this.$(".btnTest#btnTest").addClass('hidden');
+	
+	cancelModel: function(e){
+		var that = e.data.entity;
+	  that.$( that.show_mode ).removeClass('hidden');
+		that.$( that.btnEdit ).removeClass('hidden');
+		that.$( that.editorAction ).addClass('hidden');
+		that.$( that.btnDel ).removeClass('hidden');
+	  that.$( that.edit_mode ).addClass('hidden');
+		that.$( that.btnTest ).addClass('hidden');
 	},
 	deleteModel: function(){
 		window.alert("!");
 	},
 	saveModel: function(e){
-	  that = e.data.entity;
-		id = that.model.get("id");
-	  //go to 
+	  var that = e.data.entity;
 		that.model.set({
-			label: that.$("#panel"+id+" form #label").val(),
-			point: that.$("#panel"+id+" form #point").val(),
-			code: that.$( "#panel"+id+" form #code").val(),
-			login: that.$("#panel"+id+" form #login").val(),
-			pwd: that.$(  "#panel"+id+" form #pwd").val(),
-			parser: ace.edit(("editor"+that.model.attributes["id"])).getSession().getValue()
+			label: that.$( that.label ).val(),
+			point: that.$( that.point ).val(),
+			code: that.$( that.code ).val(),
+			login: that.$( that.login ).val(),
+			pwd: that.$( that.pwd ).val(),
+			parser: ace.edit( that.editor ).getSession().getValue()
 		});
 	 
 	  // Else id = -1 then it's new record
-	  if( id == that.model.cid ){
+	  if( that.model.id == that.model.cid ){
 			Backbone.sync( "create", that.model );
 		}
 		// Update exists model
@@ -187,7 +223,7 @@ app.PointView = Backbone.View.extend({
 			that.model.save();
 		};
 		// Change mode
-		that.cancelModel();
+		that.cancelModel( {data: {entity: that}} );
 		// Rewrite
 		that.renderF( that );
 	},
@@ -201,24 +237,24 @@ app.PointView = Backbone.View.extend({
 app.PointsView = Backbone.View.extend({
 	el: '#points',
 	model: new app.PointModel(),
-	//collection: new app.collPoints(),
+	collection: new app.collPoints(),
 	//listView: [],
-	view: new app.PointView(),
 	template: Handlebars.compile( $("#pointsContent").html() ),
 	initialize: function(){
 	  //this.listenTo(this.collection, 'add', this.onAdd/*this.render*/);
-		//this.collection.on( "add", this.onAdd, this );
+		this.collection.on( "add", this.onAdd, this );
+		this.collection.on( "remove", this.render, this );
+		this.collection.on( "reset", this.render, this );
 		this.$el.append( this.template() );
-	  //this.collection.fetch();
+	  this.collection.fetch();
 		this.render();
 	},
-	/*render: function(){
+	render: function(){
 		//this.$el.append( this.template() );
 		this.collection.each( function(point){
 		  var that = this;
 			that.renderPoint( point );
 		}	,this);
-
 		return this;
 	},
 	onAdd: function(item){
@@ -237,15 +273,77 @@ app.PointsView = Backbone.View.extend({
 		this.collection.add({});
 	},
 	refreshCollection: function(){
-	  this.collection.reset();
+	  this.collection.reset();//remove();//reset();
 		//_.each( this.listView, function(item){
 		//	item.remove();
 		//});
 		this.collection.fetch();
 		this.render();
-	}*/
+	}
 
 });
+
+app.PointTimeView = Backbone.View.extend({
+	el: "#pointtime",
+	template: Handlebars.compile( $("#pointTime").html() ),
+	model: new app.PointTimeModel(),
+	events: {
+		"click .btnTimeEdit" : "onEdit"
+	},
+	initialize: function(){
+		this.model.on( "sync", this.addOne, this );
+		this.model.fetch();
+		this.render();
+	},
+	addOne: function( item ){
+		this.$el.append( this.template( this.model.toJSON() ) );
+	},
+	onEdit: function(e){
+	  e.preventDefault();
+	  if( e.currentTarget.textContent == "Edit" ){
+	  	e.currentTarget.textContent = "Save";
+		  this.$el.find( "#timePlan" ).removeClass( "hidden" );
+		  this.$el.find( "#timePlan" ).val( this.$el.find("#timeReadOnly").text() );
+		  this.$el.find( "#timeReadOnly" ).addClass( "hidden" );
+		}
+		else{
+	  	e.currentTarget.textContent = "Edit";
+		  this.$el.find( "#timePlan" ).addClass( "hidden" );
+		  this.$el.find( "#timeReadOnly" ).removeClass( "hidden" );
+		  
+		  var t = this.$el.find( "#timePlan" ).val();
+		  this.$el.find( "#timeReadOnly" ).text( t );
+		  this.model.set({timeplan: t});
+			this.model.save();
+		}; 
+	}
+});
+
+app.JournalView = Backbone.View.extend({
+	el: "#journalList",
+	collection: new app.collJournal(),
+	template: Handlebars.compile( $("#idJournalItem").html() ),
+	initialize: function(){
+		this.collection.on( "sync", this.addList, this );
+		this.collection.fetch();
+		this.render();
+	},
+	addList: function( list ){
+	  list.each( this.addOne, this );
+	},
+	addOne: function( item ){
+		this.$el.append( this.template( item.toJSON() ) );
+	},
+	Refresh: function(){
+		this.collection.reset();
+		this.render();
+	}
+});
+
 $(document).ready(function() {
-	app.test_view = new app.PointsView(/*{collection: app.test_collRows}*/);
+  //'use strict';
+	app.listPoint = new app.PointsView();
+	app.pointTime = new app.PointTimeView();
+	app.listJournal = new app.JournalView();
+	//$("#tabBtnJournal").on("click", app.listJournal.Refresh);
 });
