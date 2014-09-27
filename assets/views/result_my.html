@@ -57,7 +57,12 @@
 </script>
 
 <script type="text/x-handlebars" id="wp">
-	<option data="{{id}}">{{wp}}</option>
+	<li role="presentation" class="wp-item-new"> 
+	  <a class="link" href="javascript:doPost('/api/setwp/{{id}}')">
+			<i class="fa"></i>
+			{{wp}}
+		</a>
+	</li>
 </script>
 </head>
 <body class="background-dark">
@@ -71,26 +76,16 @@
           	<li class="hidden-xs">
 							<a id="wps" 
 									href="special_search.html#"
-									class="dropdown-toggle" 
+									class="dropdown-toggle"
 									data-toggle="dropdown"
                   title=" Settings">
               	<i class="fa fa-cog"></i>
 							</a>
-							<ul id="wps-menu" class="dropdown-menu messages" role="menu">
-								<li role="presentation">
-									<form id="wpform" class="no-margin" action="/api/setwp" method="post" role="form">
-										<fieldset style="padding:15px;">
-											<label for="wp_list">WorkPlace</label>
-											<select id="wp_list" class="form-control"></select>	
-										</fieldset>
-										<div class="form-actions">
-											<div class="pull-right">
-												<button class="btn btn-xs btn-default" id="btnCancel">Cancel</button>
-												<button class="btn btn-xs btn-danger" type="submit">Set</button>
-											</div>
-										</div>
-									</form>
-								</li>
+							<ul id="wps-menu" 
+								class="dropdown-menu messages" 
+								role="menu"
+								role="tooltip"
+								class="popover">
 							</ul>
             </li>
             <li class="hidden-xs">
@@ -192,9 +187,9 @@
 <script src="/myLB/lib/bootstrap/dropdown.js"></script>
 <script src="/myLB/lib/bootstrap/modal.js"></script>
 <script src="/myLB/lib/bootstrap/tab.js"> </script>
-<!-- -->
+<!-- 
 <script src="/product/javascript/btn_input.js"> </script>
-
+-->
 <!-- basic application js
 <script src="myLB/js/app.js"></script>
 <script src="myLB/js/settings.js"></script>

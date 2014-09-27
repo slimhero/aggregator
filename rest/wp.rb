@@ -30,7 +30,9 @@ module RestAPI
 
 		post "/api/setwp/:id" do
 			usr_small = session[:usr_small]
-		  if session[:islogin] && usr_small != nil
+			puts "usr_small: #{usr_small}"
+			puts "session[:islogin]: #{session[:islogin]}"
+			if session[:islogin] && usr_small != nil
 				WP = App.struct[:USER_WP]
 				pts = nil
       
@@ -40,6 +42,8 @@ module RestAPI
 
 				session[:wp] = pts[:id]
 				redirect "/user/#{usr_small[:id]}"
+			else
+				puts 'no redirect'
 			end
 		end
 
