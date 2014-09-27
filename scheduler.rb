@@ -21,7 +21,7 @@ module Schedule
 			# load File.join( File.dirname(__FILE__), "./dbparser.rb" )
 			# Set interval for start
 			#@scheduler.interval '10s' do
-			@scheduler.in '10s' do
+			@scheduler.in '5h' do
 				load File.join( File.dirname(__FILE__), "./dbparser.rb" )
 				# Queries
 				query = DB.Query
