@@ -108,6 +108,15 @@
 </tr>
 </script>
 
+<script type="text/x-handlebars" id="wp">
+	<li role="presentation" class="wp-item-new"> 
+	  <a class="link" href="javascript:doPost('/api/setwp/{{id}}')">
+			<i class="fa"></i>
+			{{wp}}
+		</a>
+	</li>
+</script>
+
 </head>
 <body class="background-dark">
 <div class="logo">
@@ -118,13 +127,20 @@
         <div class="navbar col-md-10">
         	<ul class="nav navbar-nav navbar-right pull-right">
           	<li class="hidden-xs">
-							<a href="ui_accordion.html#" 
-									id="settings"
-                  title="Settings"
-                  data-toggle="popover"
-                  data-placement="bottom">
+							<a id="wps"
+									href="ui_accordion.html#" 
+									class="dropdown-toggle"
+                  data-toggle="dropdown"
+									title=" Settings">
               	<i class="fa fa-cog"></i>
-              </a>
+							</a>
+							<ul id="wps-menu" 
+								class="dropdown-menu messages" 
+								role="menu"
+								role="tooltip"
+								class="popover">
+							</ul>
+							
             </li>
 						<li class="hidden-xs">
 							<a href="/">
@@ -240,6 +256,7 @@
 <script src="/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
 
 <script src="/product/javascript/admin_old.js"></script>
+<script src="/product/javascript/wp_change.js"></script>
 <script type="text/template" id="settings-template">
     <div class="setting clearfix">
         <div>Background</div>
