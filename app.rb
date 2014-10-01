@@ -14,6 +14,7 @@ require_relative 'rest/data'
 require_relative 'rest/state'
 require_relative 'rest/auth'
 require_relative 'rest/wp'
+require_relative 'rest/blacklist'
 require_relative 'db/query'
 
 class App < Sinatra::Base
@@ -36,6 +37,7 @@ class App < Sinatra::Base
 	use RestAPI::State
 	use RestAPI::Auth
 	use RestAPI::WP
+	use RestAPI::BlackList
 
 	get "/" do
 		session.clear
