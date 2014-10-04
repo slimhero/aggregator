@@ -97,8 +97,8 @@ module DB
 	QUERY[:BLACK_LIST_STATE_U] = "UPDATE RABlackList r SET r.STATE = ? WHERE r.ID = ?;"
 	QUERY[:BLACK_LIST_PHONE_U] = "UPDATE RABlackList r SET r.PHONE = ? WHERE r.ID = ?;"
 	QUERY[:BLACK_LIST_I] = "INSERT INTO RABlackList ( PHONE, STATE ) VALUES( ?, 2 );"
-	STRUCT[:BLACK] = Struct.new( :id, :rule, :state, :stateid )
 	# Black List Rules
+	STRUCT[:BLACK] = Struct.new( :id, :rule, :state, :stateid )
 	QUERY[:BLACK_LIST_RULE_Q] = "SELECT v.ID, v.RULE, v.STATE, v.STATEID FROM V_BlackList_Rule v;"
 	QUERY[:BLACK_LIST_RULE_STATE_U] = "UPDATE RABlackListRule SET STATE = ? WHERE ID = ?;"
 	QUERY[:BLACK_LIST_RULE_U] = "UPDATE RABlackListRule SET RULE = ? WHERE ID = ?;"
