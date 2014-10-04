@@ -4,19 +4,22 @@ module RestAPI
 	class Data < Sinatra::Base
 		#Get all records
 		get "/api/data" do
-			# Create new struct from
-			Data = App.struct[:DATA]
-			results = []
-			App.db.execute( App.query[:DATA_Q] ) do |data|
-				pts = Data.new( 
-						data[0],  data[1],  data[2],  data[3], 
-						data[4],  data[5],  data[6],  data[7], 
-						data[8],  data[9],  data[10], data[11], 
-						data[12], data[13], data[14], data[15] 
-				)
-				results.push( pts )
+			usr_small = session[:usr_small]
+			if session[:islogin] && usr_small != nil 
+				# Create new struct from
+				Data = App.struct[:DATA]
+				results = []
+				App.db.execute( App.query[:DATA_Q_U], [usr_small[:id]] ) do |data|
+					pts = Data.new( 
+							data[0],  data[1],  data[2],  data[3], 
+							data[4],  data[5],  data[6],  data[7], 
+							data[8],  data[9],  data[10], data[11], 
+							data[12], data[13], data[14], data[15] 
+					)
+					results.push( pts )
+				end
+				json results
 			end
-			json results
 		end
 
 		#Get one
@@ -48,14 +51,17 @@ module RestAPI
 
 		#Update
 		put "/api/data/user/:id" do
-  		data = JSON.parse request.body.read
-			App.db.execute( 
-				App.query[:DATA_U_USER], 
-				[
-					data["userid"], 
-					params[:id]
-				]
-			)
+  		#data = JSON.parse request.body.read
+			usr_small = session[:usr_small]
+			if session[:islogin] && usr_small != nil
+				App.db.execute( 
+					App.query[:DATA_U_USER], 
+						[
+							usr_small[:id], 
+							params[:id]
+						]
+				)
+			end
 		end
 	end
 end

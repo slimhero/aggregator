@@ -34,9 +34,18 @@ module RestAPI
 							if count[0] > 1 
 								redirect "/wp"
 							else
-								redirect "/user/#{data[0]}"
+								WP = App.struct[:USER_WP]
+								pts = nil
+      
+								App.db.execute( App.query[:USER_WP_LIST], [usr[:id]] ) do |wp|
+									pts = WP.new( wp[0], wp[1] )
+
+									session[:wp] = pts[:id]
+									redirect "/user/#{usr[:id]}"
+ 
+								end
+								puts "#{count[0]}"
 							end
-							puts "#{count[0]}"
 						end
 					end
 				rescue Exception => e

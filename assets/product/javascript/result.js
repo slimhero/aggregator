@@ -42,7 +42,10 @@ app.RADataModel = Backbone.Model.extend({
 		page: "",
 		operdate: "",
 		user: "", 
-		state: 0	
+		userid: 0,
+		state: "",
+		stateid: 0
+
 	},
 	url: function(){
 		return "/api/data/" + this.id;
@@ -113,13 +116,27 @@ app.RADataView = Backbone.View.extend({
 		  var that = e.data.that;
 			var m = that.model;//.set({state})
 			var el = that.$el.find("#"+that.model.id+" .btn-group>.btn#changedState" );
-			var data = el.attr("data");
+			// Status is Number but sometime we have string as "3"
+			var data = Number( el.attr("data") );
 			var label = el.text();
-			that.model.set({stateid: data, state: label });
-		  that.model.save( undefined, {url: ("/api/data/state/" + that.model.id)} );
+
+			if( data != 1 ){
+				that.model.set({stateid: data, state: label });
+		  	that.model.save( undefined, {url: ("/api/data/state/" + that.model.id)} );
 			
-			that.refresh( that.model, that.template );
-			that.prepareData();
+				that.model.set({userid: app.user.id, user: app.user.fio });
+		  	that.model.save( undefined, {url: ("/api/data/user/" + that.model.id)} );
+			
+				that.refresh( that.model, that.template );
+				that.prepareData();
+
+				// Delete tag from page
+				var tag = "section#" + that.model.id;
+				$( tag ).remove();
+			}
+			else{
+				window.alert( "Not correct state type for change" );
+			}
 		}
 	},
 	refresh: function( model, template ){
@@ -180,6 +197,7 @@ app.FullView = Backbone.View.extend({
 		$("#btnRefresh").bind("click", {that: this }, this.setData);
 		$("#filterNew").bind("change",{that:this}, this.setNew );
 		$("#filterMy").bind("change", {that: this}, this.setMy );
+		$("#filterArchive").bind("change", {that: this}, this.setArchive );
 		this.render();
 	},
 	setCollection: function( items ){
@@ -239,14 +257,36 @@ app.FullView = Backbone.View.extend({
 		var that = e.data.that;
 		that.clear();
 
-
-		app.collFiltered = app.collData.where( {stateid: 1} );
+		console.log( "app.user.id=" + app.user.id );
+		app.collFiltered = app.collData.where( {userid: app.user.id, stateid: 2} );
 		// Show filtered data
 		app.dataList = new app.DataListView({ collection: app.collFiltered });
 		app.dataList.onFilter( app.dataList.collection );
 	},
+
+	// only Archive data
+	setArchive: function(e){
+		console.log( "setArchive" );
+		
+		// Close #filterPlace
+		// when button has been clicked
+		if( $(".in#filterPlace").length > 0 ){
+			$("button[data-target='#filterPlace']").click();
+		}
+
+		var that = e.data.that;
+		that.clear();
+
+		console.log( "app.user.id=" + String(app.user.id) );
+		console.log( app.collData.where( {userid: app.user.id, stateid: 4} ) );
+
+		app.collFiltered = app.collData.where( {userid: app.user.id, stateid: 4} );
+		// Show filtered data
+		app.dataList = new app.DataListView({ collection: app.collFiltered });
+		app.dataList.onFilter( app.dataList.collection );
+	},
+
 	setFilter: function(){
-	  console.log("setFilter");
 		// Clear data
 		app.collFiltered = [];
 		app.dataList.remove();
@@ -301,7 +341,6 @@ app.FullView = Backbone.View.extend({
 
 $(document).ready(function() {
 	try{
-		console.log("q");
 		app.full = new app.FullView();
 	}
 	catch(e){

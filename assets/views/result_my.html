@@ -99,13 +99,13 @@
     <div class="content container">
         <div class="row">
 					<div class="col-md-10">
-						<h2 class="page-title">Search Results <small>Search result and form</small>
-							<div class="pull-right">
-								<button class="btn btn-default btn-xs" type="button" id="btnRefresh">
-									<i class="fa fa-refresh"></i> Обновить</button>
-								<button class="btn btn-default btn-xs" data-toggle="collapse" data-target="#filterPlace" type="button">
-									<i class="eicon-search"></i> Фильтрация</button>
-							</div>
+						<h2 class="page-title">Search Results <small>Search result and form</small>							
+								<div class="pull-right">
+									<button class="btn btn-default btn-xs" type="button" id="btnRefresh">
+										<i class="fa fa-refresh"></i> Обновить</button>
+									<button class="btn btn-default btn-xs" data-toggle="collapse" data-target="#filterPlace" type="button">
+										<i class="eicon-search"></i> Фильтрация</button>
+								</div>
 						</h2>
           </div>
 				</div>
@@ -123,6 +123,11 @@
 								<input id="filterMy" type="radio" name="options">
 								<i class="fa fa-file-o"></i>
 								My
+							</label>
+							<label class="btn btn-inverse btn-lg">
+								<input id="filterArchive" type="radio" name="options">
+								<i class="fa fa-file-o"></i>
+								Archive
 							</label> 
 						</div>
 					</div>
@@ -195,7 +200,7 @@
 <!--backbone and friends -->
 <script src="/underscore/underscore-min.js"></script>
 <script src="/backbone/backbone-min.js"></script>
-<script src="/backbone/backbone.paginator.js"></script>
+<!--<script src="/backbone/backbone.paginator.js"></script>-->
 <script src="/handlebars/handlebars-v1.3.0.js"></script>
 
 <!-- bootstrap default plugins -->
@@ -217,6 +222,7 @@
 -->
 <script src="/product/javascript/result.js"></script>
 <script src="/product/javascript/wp_change.js"></script>
+<script src="/product/javascript/user.js"></script>
 
 <script type="text/template" id="settings-template">
     <div class="setting clearfix">
