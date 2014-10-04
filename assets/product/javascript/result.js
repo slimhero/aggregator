@@ -211,10 +211,16 @@ app.FullView = Backbone.View.extend({
 	// Only new data
 	setNew: function(e){
 		console.log( "setNew" );
+
+		// Close #filterPlace
+		// when button has been clicked
+		if( $(".in#filterPlace").length > 0 ){
+			$("button[data-target='#filterPlace']").click();
+		}
+		
 		var that = e.data.that;
-		
 		that.clear();
-		
+
 		app.collFiltered = app.collData.where( {stateid: 1} );
 		// Show filtered data
 		app.dataList = new app.DataListView({ collection: app.collFiltered });
@@ -223,8 +229,16 @@ app.FullView = Backbone.View.extend({
 	// only My data
 	setMy: function(e){
 		console.log( "setMy" );
+		
+		// Close #filterPlace
+		// when button has been clicked
+		if( $(".in#filterPlace").length > 0 ){
+			$("button[data-target='#filterPlace']").click();
+		}
+
 		var that = e.data.that;
 		that.clear();
+
 
 		app.collFiltered = app.collData.where( {stateid: 1} );
 		// Show filtered data
