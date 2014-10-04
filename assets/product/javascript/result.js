@@ -150,7 +150,7 @@ app.DataListView = Backbone.View.extend({
 	//model: new app.DataModel(),
 	el: '#results',
 	//model: new app.RADataModel(),
-	collection: new app.collRAData(),
+	//collection: new app.collRAData(),
 	initialize: function(){
 		this.onAddAll( this.collection );
 	},
@@ -200,9 +200,16 @@ app.FullView = Backbone.View.extend({
 		$("#filterArchive").bind("change", {that: this}, this.setArchive );
 		this.render();
 	},
+	// Set collection for view
 	setCollection: function( items ){
-		app.collFiltered = items;
-		console.log("setCollection");
+		// From old version
+		// Code:
+		//app.collFiltered = items;
+		// New:
+		$("#filterNew").parent().addClass("active");	
+		app.collFiltered = new app.collRAData( items.where({stateid: 1}) );
+		//console.log("setCollection");
+		
 		app.dataList = new app.DataListView({ collection: app.collFiltered });
 	},
 	setData: function(e){
@@ -342,6 +349,8 @@ app.FullView = Backbone.View.extend({
 $(document).ready(function() {
 	try{
 		app.full = new app.FullView();
+		//$("#filterNew").change();
+		//$("#filterNew").addClass("active");
 	}
 	catch(e){
 		console.log( e.message );
