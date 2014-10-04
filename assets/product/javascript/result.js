@@ -43,7 +43,6 @@ app.RADataModel = Backbone.Model.extend({
 		operdate: "",
 		user: "", 
 		state: 0	
-
 	},
 	url: function(){
 		return "/api/data/" + this.id;
@@ -179,6 +178,8 @@ app.FullView = Backbone.View.extend({
 	
 		$("#btnFilter").bind("click", {that: this }, this.setFilter);
 		$("#btnRefresh").bind("click", {that: this }, this.setData);
+		$("#filterNew").bind("change",{that:this}, this.setNew );
+		$("#filterMy").bind("change", {that: this}, this.setMy );
 		this.render();
 	},
 	setCollection: function( items ){
@@ -199,6 +200,36 @@ app.FullView = Backbone.View.extend({
 	clearFilter: function(){
 		$("#filterState").val( "Все" );
 		$("#filterSource").val( "Все" );
+	},
+	clear: function(){
+		// Clear data
+		app.collFiltered = [];
+		app.dataList.remove();
+		app.dataList.render();
+		delete app.collFiltered;
+	},
+	// Only new data
+	setNew: function(e){
+		console.log( "setNew" );
+		var that = e.data.that;
+		
+		that.clear();
+		
+		app.collFiltered = app.collData.where( {stateid: 1} );
+		// Show filtered data
+		app.dataList = new app.DataListView({ collection: app.collFiltered });
+		app.dataList.onFilter( app.dataList.collection );
+	},
+	// only My data
+	setMy: function(e){
+		console.log( "setMy" );
+		var that = e.data.that;
+		that.clear();
+
+		app.collFiltered = app.collData.where( {stateid: 1} );
+		// Show filtered data
+		app.dataList = new app.DataListView({ collection: app.collFiltered });
+		app.dataList.onFilter( app.dataList.collection );
 	},
 	setFilter: function(){
 	  console.log("setFilter");
