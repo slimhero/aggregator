@@ -126,16 +126,18 @@ app.RADataView = Backbone.View.extend({
         // Works not for all
 				// No needs to return back to new
 				if( data != 1 ){
+					// change state
 					that.model.set({stateid: data, state: label });
 		  		that.model.save( undefined, {url: ("/api/data/state/" + that.model.id)} );
 			
+			    // change user name
 					that.model.set({userid: app.user.id, user: app.user.fio });
 		  		that.model.save( undefined, {url: ("/api/data/user/" + that.model.id)} );
 			
+					// refresh data
 					that.refresh( that.model, that.template );
 					that.prepareData();
 				
-
 					// Delete tag from page
 					var tag = "section#" + that.model.id;
 					$( tag ).remove();
