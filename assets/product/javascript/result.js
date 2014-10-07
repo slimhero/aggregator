@@ -120,22 +120,29 @@ app.RADataView = Backbone.View.extend({
 			var data = Number( el.attr("data") );
 			var label = el.text();
 
-			if( data != 1 ){
-				that.model.set({stateid: data, state: label });
-		  	that.model.save( undefined, {url: ("/api/data/state/" + that.model.id)} );
+			// Change stateid value with new
+			// Make changes only they not equal
+			if( that.model.get("stateid") != data ){
+        // Works not for all
+				// No needs to return back to new
+				if( data != 1 ){
+					that.model.set({stateid: data, state: label });
+		  		that.model.save( undefined, {url: ("/api/data/state/" + that.model.id)} );
 			
-				that.model.set({userid: app.user.id, user: app.user.fio });
-		  	that.model.save( undefined, {url: ("/api/data/user/" + that.model.id)} );
+					that.model.set({userid: app.user.id, user: app.user.fio });
+		  		that.model.save( undefined, {url: ("/api/data/user/" + that.model.id)} );
 			
-				that.refresh( that.model, that.template );
-				that.prepareData();
+					that.refresh( that.model, that.template );
+					that.prepareData();
+				
 
-				// Delete tag from page
-				var tag = "section#" + that.model.id;
-				$( tag ).remove();
-			}
-			else{
-				window.alert( "Not correct state type for change" );
+					// Delete tag from page
+					var tag = "section#" + that.model.id;
+					$( tag ).remove();
+				}
+				else{
+					window.alert( "Not correct state type for change" );
+				}
 			}
 		}
 	},
