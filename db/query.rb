@@ -105,6 +105,18 @@ module DB
 	QUERY[:BLACK_LIST_RULE_U] = "UPDATE RABlackListRule SET RULE = ? WHERE ID = ?;"
 	QUERY[:BLACK_LIST_I] = "INSERT INTO RABlackListRule ( RULE, STATE ) VALUES ( ?, 2 );"
 
+	#######################################
+	# Users list                          #
+	#######################################
+	QUERY[:USERS_Q_ALL] = "SELECT u.ID, u.NAME, u.SECONDNAME, u.LASTNAME, u.LOGIN, u.OPERDATE, u.STATE, u.STATEID FROM V_USERS u;"
+	QUERY[:USERS_Q] = "SELECT u.ID, u.NAME, u.SECONDNAME, u.LASTNAME, u.LOGIN, u.OPERDATE, u.STATE, u.STATEID FROM V_USERS u WHERE u.ID = ?;"
+	QUERY[:USERS_I] = "INSERT INTO RAUsers ( NAME, SECONDNAME, LASTNAME, LOGIN, STATE ) VALUES( ?,?,?,?,1 );"
+	QUERY[:USERS_U] = "UPDATE RAUsers SET NAME = ?, SECONDNAME = ?, LASTNAME = ?, LOGIN = ? WHERE ID = ?;"
+	QUERY[:USERS_STATE_U] = "UPDATE RAUsers SET STATE = ? WHERE ID = ?;"
+			 
+	STRUCT[:USERS] = Struct.new( :id, :name, :secondname, :lastname, :login, :operdate, :state, :stateid )
+	QUERY[:USERS_QI] = "SELECT u.ID, u.NAME, u.SECONDNAME, u.LASTNAME, u.LOGIN, u.OPERDATE, u.STATE, u.STATEID FROM V_USERS u;"
+
 
 
 

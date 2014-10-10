@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>realty Helper - Users</title>
+    <link href="/myLB/css/application.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/myLB/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+		<meta charset="utf-8">
+<!-- Templates -->
+<script type="text/x-handlebars" id="point">
+<div class="panel" id="panel{{id}}">
+  <div class="panel-heading">
+		<a class="accordion-toggle"
+			data-toggle="collapse" 
+			data-parent="#accordion2" 
+			href="ui_accordion.html#{{id}}">{{label}}<small>{{point}}</small></a>
+	</div>
+	<div id="{{id}}" class="panel-collapse collapse">
+		<div class="panel-body">
+			<div class="pull-right">
+    		<button class="btn btn-xs btn-inverse btnEdit" id="btnEdit"><i class="fa fa-edit"></i> Edit</button>
+    		<button class="btn btn-xs btn-inverse btnDel" id="btnDel"><i class="glyphicon glyphicon-remove"></i> Delete</button>
+				<button class="btn btn-xs btn-inverse btnTest hidden"
+					      id="btnTest" 
+								data-target="#testModal"
+								role="button"
+								data-toggle="modal"><i class="fa fa-play"></i> Test</button>
+			</div>
+			<form class="form-horizontal" role="form">
+				<div class="show_mode">
+					<label>URL: <a href="{{point}}">{{point}}</a></label>
+					<label>CODE: {{code}}</label>
+					<br>
+					<label>PARSER:</label>
+					<br>
+				</div>
+				<div class="edit_mode hidden">
+					<fieldset>
+						<div class="row">
+							<div class="col-xs-1">
+								<p>Name:</p>
+							</div>
+							<div class="col-xs-3">
+								<input class="form-control" id="label" type="text" value="{{label}}">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-1">
+								<p>URL:</p>
+								<p>Login:</p>
+							</div>
+							<div class="col-xs-3">
+								<input class="form-control" id="point" type="text" value="{{point}}">
+								<input class="form-control" id="login" type="text" value="{{login}}">
+							</div>
+							<div class="col-xs-1">
+								<p>Code:</p>
+								<p>PWD:</p>
+							</div>
+							<div class="col-xs-3">
+								<input class="form-control" id="code" type="text" value="{{code}}">
+								<input class="form-control" id="pwd" type="text" value="{{pwd}}">
+							</div>
+						</div>
+						<p>PARSER:</p>
+					</fieldset>
+				</div>
+				<div id="editor{{id}}" class="editor">{{parser}}</div>
+				<div class="btn-toolbar pull-right editorAction hidden">
+					<button class="btn btn-sm btn-danger btnSave" type="button" id="btnSave">Save</button>
+					<button class="btn btn-sm btn-default" type="button" id="btnCancel">Cancel</button>
+				</div>
+			</form>
+		</div>
+  </div>
+</div>
+</script>
+<script type="text/x-handlebars" id="pointsContent">
+<div id="points" class="tab-pane active clearfix">
+	<div class="panel-group" id="accordion2">
+		<div class="actions">
+    	<button id="btnRefresh" class="btn btn-xs btn-inverse"><i class="eicon-arrows-ccw"></i> Refresh</button>
+      <button id="btnAddOne" class="btn btn-xs btn-inverse"><i class="eicon-plus-circled"></i> Add one</button>
+		</div>
+	</div>
+</div>
+</script>
+<script type="text/x-handlebars" id="pointTime">
+<form id="{{id}}">
+	<fieldset>
+		<div class="form-group">
+			<label for="timePlan">Everyday start time</label>
+			<p id="timeReadOnly">{{timeplan}}</p>
+			<input id="timePlan" class="form-control hidden" type="text" name="timePlan"></input>
+		</div>	
+	</fieldset>
+	<div>
+		<button class="btn btn-sm btn-danger btnTimeEdit">Edit</button>
+	</div>	
+</form>
+</script>
+<script type="text/x-handlebars" id="idUserItem">
+<tr>
+	<td class="col-md-3">{{lastname}}</td>
+	<td>{{{name}}}</td>
+	<td>{{{secondname}}}</td>
+	<td>{{{login}}}</td>
+	<td>{{{operdate}}}</td>
+	<td>{{{state}}}</td>
+	<td>{{{line}}}</td>
+</tr>
+</script>
+
+<script type="text/x-handlebars" id="wp">
+	<li role="presentation" class="wp-item-new"> 
+	  <a class="link" href="javascript:doPost('/api/setwp/{{id}}')">
+			<i class="fa"></i>
+			{{wp}}
+		</a>
+	</li>
+</script>
+
+</head>
+<body class="background-dark">
+<div class="logo">
+    <h4><a href="/">realty <strong>Helper</strong></a></h4>
+</div>
+<div class="wrap">
+    <header class="page-header">
+        <div class="navbar col-md-10">
+        	<ul class="nav navbar-nav navbar-right pull-right">
+          	<li class="hidden-xs">
+							<a id="wps"
+									href="ui_accordion.html#" 
+									class="dropdown-toggle"
+                  data-toggle="dropdown"
+									title="Workplace">
+              	<i class="fa fa-cog"></i>
+							</a>
+							<ul id="wps-menu" 
+								class="dropdown-menu messages" 
+								role="menu"
+								role="tooltip"
+								class="popover">
+							</ul>
+							
+            </li>
+						<li class="hidden-xs">
+							<a href="/">
+								<i class="fa fa-sign-out"></i>
+							</a>
+						</li>
+          </ul>
+        </div>
+		</header>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="page-title">Users <small>list</small></h2>
+            </div>
+        </div>
+        <div class="row">
+					<div class="col-md-9">
+						<div class="body">
+								<section class="widget">
+									<div id="users">
+										<div class="actions">
+                        <button class="btn btn-xs btn-inverse"><i class="eicon-plus-circled"></i> Add</button>
+                    </div>
+										<table class="table table-hover table-striped">
+											<thead>
+												<tr>
+													<th><strong><i>Last name</i></strong></th>
+													<th><strong><i>Name</i></th>
+													<th><strong><i>Second name</i></th>
+													<th><strong><i>Login</i></th>
+													<th><strong><i>Date</i></th>
+													<th><strong><i>State</i></th>
+													<th><strong><i>Workplace</i></th>
+												</tr>
+											</thead>
+											<tbody id="usersList" class="table-striped">
+											</tbody>
+										</table>
+									</div>
+								</section>
+					</div>
+        </div>
+    </div>
+    <div class="loader-wrap hiding hide">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>
+
+<!-- jquery and friends -->
+<script src="/jquery/jquery-2.1.1.min.js"> </script>
+<!--
+<script src="myLB/lib/jquery-pjax/jquery.pjax.js"></script>
+-->
+
+<!-- jquery plugins - - >
+<script src="/myLB/lib/jquery-maskedinput/jquery.maskedinput.js"></script>
+<script src="/myLB/lib/parsley/parsley.js"> </script>
+<script src="/myLB/lib/icheck.js/jquery.icheck.js"></script>
+<script src="/myLB/lib/select2.js"></script>
+-->
+
+<!--backbone and friends -->
+<script src="/handlebars/handlebars-v1.3.0.js"></script>
+<script src="/underscore/underscore-min.js"></script>
+<script src="/backbone/backbone.js"></script>
+<!--
+<script src="/backbone/backbone.courier.js"></script>
+-->
+<!-- bootstrap default plugins -->
+<script src="/myLB/lib/bootstrap/transition.js"></script>
+<script src="/myLB/lib/bootstrap/collapse.js"></script>
+<script src="/myLB/lib/bootstrap/alert.js"></script>
+<script src="/myLB/lib/bootstrap/tooltip.js"></script>
+<script src="/myLB/lib/bootstrap/popover.js"></script>
+<script src="/myLB/lib/bootstrap/button.js"></script>
+<script src="/myLB/lib/bootstrap/dropdown.js"></script>
+<script src="/myLB/lib/bootstrap/modal.js"></script>
+<script src="/myLB/lib/bootstrap/tab.js"> </script>
+
+<!-- bootstrap custom plugins - ->
+<script src="/myLB/lib/bootstrap-datepicker.js"></script>
+<script src="/myLB/lib/bootstrap-select/bootstrap-select.js"></script>
+- - >
+<script src="/myLB/lib/wysihtml5/wysihtml5-0.3.0_rc2.js"></script>
+<script src="/myLB/lib/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+-->
+<!-- basic application js
+<script src="myLB/js/app.js"></script>
+<script src="myLB/js/settings.js"></script>
+-->
+<!-- Ace -->
+<script src="/ace/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="/product/javascript/admin_users.js"></script>
+<script src="/product/javascript/wp_change.js"></script>
+<script type="text/template" id="settings-template">
+    <div class="setting clearfix">
+        <div>Background</div>
+        <div id="background-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+            <% dark = background == 'dark'; light = background == 'light';%>
+            <button type="button" data-value="dark" class="btn btn-sm btn-transparent <%= dark? 'active' : '' %>">Dark</button>
+            <button type="button" data-value="light" class="btn btn-sm btn-transparent <%= light? 'active' : '' %>">Light</button>
+        </div>
+    </div>
+    <div class="setting clearfix">
+        <div>Sidebar on the</div>
+        <div id="sidebar-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+            <% onRight = sidebar == 'right'%>
+            <button type="button" data-value="left" class="btn btn-sm btn-transparent <%= onRight? '' : 'active' %>">Left</button>
+            <button type="button" data-value="right" class="btn btn-sm btn-transparent <%= onRight? 'active' : '' %>">Right</button>
+        </div>
+    </div>
+    <div class="setting clearfix">
+        <div>Sidebar</div>
+        <div id="display-sidebar-toggle" class="pull-left btn-group" data-toggle="buttons-radio">
+            <% display = displaySidebar%>
+            <button type="button" data-value="true" class="btn btn-sm btn-transparent <%= display? 'active' : '' %>">Show</button>
+            <button type="button" data-value="false" class="btn btn-sm btn-transparent <%= display? '' : 'active' %>">Hide</button>
+        </div>
+    </div>
+    <div class="setting clearfix">
+        <div>White Version</div>
+        <div>
+            <a href="white/" class="btn btn-sm btn-transparent">&nbsp; Switch &nbsp;   <i class="fa fa-angle-right"></i></a>
+        </div>
+    </div>
+</script>
+
+<script type="text/template" id="sidebar-settings-template">
+        <% auto = sidebarState == 'auto'%>
+        <% if (auto) {%>
+            <button type="button"
+                    data-value="icons"
+                    class="btn-icons btn btn-transparent btn-sm">Icons</button>
+    <button type="button"
+            data-value="auto"
+            class="btn-auto btn btn-transparent btn-sm">Auto</button>
+        <%} else {%>
+            <button type="button"
+                    data-value="auto"
+                    class="btn btn-transparent btn-sm">Auto</button>
+        <% } %>
+		</script>
+	
+		<div id="testModal" 
+			   class="modal fade" 
+				 aria-hidden="true" 
+				 aria-labelledby="testModalLabel" 
+				 role="dialog" 
+				 tabindex="-1">
+			<div class="modal-dialog" id="testModalLabel">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
+						<h4 class="modal-title">Testing</h4>
+					</div>
+					<div class="modal-body">
+						<div class="rows">
+							<!--
+							<textarea class="form-control" >asdasdasdasd</textarea>
+							-->
+							<div id="textarea">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>	
