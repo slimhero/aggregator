@@ -3,4 +3,4 @@
 require 'rubygems'
 require 'daemons'
 
-Daemons.run( 'scheduler.rb' )
+Daemons.run( './scheduler.rb' )
