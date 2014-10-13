@@ -5,3 +5,8 @@
 require File.expand_path('../config/application', __FILE__)
 
 Agregator::Application.load_tasks
+
+desc 'Update external data'
+task :upgdate do
+	exec "ruby daemon.rb"
+end

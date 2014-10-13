@@ -14,7 +14,7 @@ module Schedule
 		
     def initialize
 			@scheduler = Rufus::Scheduler.new
-			@logger = Logger.new( './log.log' );
+			@logger = Logger.new( './deamon_sheduler.log' );
 			@logger.info( 'initialize' )
 		end
    
@@ -23,7 +23,7 @@ module Schedule
 			# load File.join( File.dirname(__FILE__), "./dbparser.rb" )
 			# Set interval for start
 			@logger.info( 'run' )
-			@scheduler.interval '20s' do
+			@scheduler.interval '3h' do
 			#@scheduler.in '10s' do
 			#@scheduler.in '5h' do
 				begin
