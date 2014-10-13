@@ -23,7 +23,7 @@ module Schedule
 			# load File.join( File.dirname(__FILE__), "./dbparser.rb" )
 			# Set interval for start
 			@logger.info( 'run' )
-			@scheduler.interval '3h' do
+			@scheduler.interval '5m' do
 			#@scheduler.in '10s' do
 			#@scheduler.in '5h' do
 				begin
