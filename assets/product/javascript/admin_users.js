@@ -19,7 +19,7 @@ app.collState = Backbone.Collection.extend({
 
 app.UserModel = Backbone.Model.extend({
 	defaults: {
-		id: -1,
+		id:-1,
 		lastname: "",
 		secondname: "",
 		name: "",
@@ -51,6 +51,12 @@ app.UsersView = Backbone.View.extend({
 		*/
 		this.collection.on("sync", this.setUsersData, this );
 		this.collection.fetch();
+
+		$("#btnSaveUser").bind("click", {that: this} ,this.saveNewUser);
+		//$el.find('#btnSaveUser').on("click", this.saveNewUser );
+	},
+	events: {
+		"click #btnSaveUser": "saveNewUser"
 	},
 	// Add items
 	setUsersData: function(items){
@@ -69,6 +75,91 @@ app.UsersView = Backbone.View.extend({
 		console.log( item.toJSON() );
 
 		this.$el.append( this.template( item.toJSON() ) );
+	},
+	// Save user
+	saveNewUser: function( e ){
+		var strError = "";
+		if( $("#first-name").val() == "" ){
+			strError = "First name is not filled!";
+		}
+		else if( $("#second-name").val() == "" ){
+			strError = "Second name is not filled!";
+		}
+		else if( $("#last-name").val() == "" ){
+			strError = "Last name is not filled!";
+		}
+		else if( $("#login").val() == "" ){
+			strError = "Login is not filled!";
+		}
+		/*else if( $("#pwd").val() == "" ){
+			strError = "Password is not filled!";
+		}*/
+		;
+		// Check error
+		if( strError != "" ){
+			window.alert( "ERROR: " + strError );
+		}
+		else{
+		  // Create new user
+			var user = new app.UserModel({
+					lastname: $("#last-name").val(),
+					secondname: $("#second-name").val(),
+					name: $("#first-name").val(),
+					login: $("#login").val()
+			});
+			// Save model
+			if( user.id == -1 ){
+				Backbone.sync( "create", user, { 
+					success: function(model,response){
+						console.log( 'model' );
+						console.log( model[0] );
+						console.log( 'response' );
+						console.log( response );
+
+						//e.data.that.collection.add( model );
+						//e.data.that.setUserData( model );
+						e.data.that.addUser( e.data.that, new app.UserModel( model[0] ) );
+						
+					},
+					error: function( model, response ){
+						window.alert( response );
+					}
+				});
+			}else{
+				user.save();
+				e.data.that.addUser( e.data.that, user );
+			}
+			/*
+			// Add model to collection 
+			e.data.that.collection.add( user );
+	
+			e.data.that.setUserData( user );
+
+			// Close modal window
+			$("#addUser").modal( 'hide' );
+
+			// Clear data
+			e.data.that.clearForm();
+			*/
+		}
+	},
+	clearForm: function(){
+		// Clear data
+		$("#first-name").val("");
+		$("#second-name").val( "" );
+		$("#last-name").val( "" );
+		$("#login").val( "" );
+		$("#pwd").val( "" );	
+	},
+	addUser: function( that, model ){
+			// Add model to collection 
+			that.collection.add( model );
+			// To page
+			that.setUserData( model );
+			// Close modal window
+			$("#addUser").modal( 'hide' );
+			// Clear data
+			that.clearForm();
 	}
 });
 

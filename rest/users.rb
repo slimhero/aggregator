@@ -22,7 +22,7 @@ module RestAPI
 		  if session[:islogin] && usr_small != nil
 				Users = App.struct[:USERS]
 				App.db.execute( App.query[:USERS_Q], [params[:id]] ) do |data|
-					pts = Users.new( data[0], data[1], data[2], data[3], data[5], data[6], data[7] )
+					pts = Users.new( data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7] )
 					result.push( pts )
 				end
 			end	
@@ -32,18 +32,29 @@ module RestAPI
 
 		# Create new user
 		post "/api/users/:id" do
+			puts 'create new user'
 			data = JSON.parse request.body.read
 		  usr_small = session[:usr_small]
 		  if session[:islogin] && usr_small != nil
-				App.db.execute( 
-					App.query[:USERS_I],
-					[
-						data["name"],
-						data["secondname"],
-						data["lastname"],
-						data["login"]
-					] 	
-				) 
+				begin
+					App.db.execute( 
+						App.query[:USERS_I],
+						[
+							data["name"],
+							data["secondname"],
+							data["lastname"],
+							data["login"]
+						] 	
+					)
+					result = []
+					Users = App.struct[:USERS]
+			  	response = App.db.execute( App.query[:USERS_Q_IDX], [data["login"]] ) 
+					a = response[0]
+					pts = Users.new( a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7] )
+					result.push( pts )
+				
+					json result
+				end
 			end	
 		end
 
