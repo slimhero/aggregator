@@ -71,7 +71,7 @@ app.RADataView = Backbone.View.extend({
 	//model: new app.RADataModel(),
 	model: app.RADataModel,
 	template: Handlebars.compile( $("#dataResult").html() ),
-	stateTemplate: Handlebars.compile( $("#stateList").html() ),
+	//stateTemplate: Handlebars.compile( $("#stateList").html() ),
 	_state: 0,
 	mv: function( that ){
 		$( '#' + this.model.id + '>section>.state-toggle').on('show.bs.dropdown', {that: this}, function (e) {
@@ -92,16 +92,21 @@ app.RADataView = Backbone.View.extend({
 		
 		var stateCollection = app.states;
 		if( stateCollection.length > 0 ){
-			  stateCollection.each( function(i){
-				this.$el.find("#" + this.model.id + " #states").append( this.stateTemplate( i.toJSON() ) );
-				var z = "#" + this.model.id + " .stateMenu[data='" + i.get("id") + "']";
+			  var id = "#" + this.model.id;
+				stateCollection.each( function(i){
+				// Use template as global var - compile once
+				//this.$el.find("#" + this.model.id + " #states").append( this.stateTemplate( i.toJSON() ) );
+				this.$el.find( id + " #states").append( app.templateState( i.toJSON() ) );
+				var z = id + " .stateMenu[data='" + i.get("id") + "']";
+				/* Unbind trigger
 				//Unbind 
-			  this.$el.find( z ).unbind();  
+			  //this.$el.find( z ).unbind();  
+				*/
 				//Bind
 				this.$el.find( z ).bind( 
 					'click',
 					{
-						el: this.$el.find("#"+this.model.id+" .btn-group>.btn#changedState" ),
+						el: this.$el.find(id+" .btn-group>.btn#changedState" )
 					},
 					function(e){
 						if( e.data.el ){
@@ -213,6 +218,9 @@ app.FullView = Backbone.View.extend({
 		app.collData.on( "sync", this.setCollection, app.collData );
 		app.collData.fetch();
 	
+		app.templateState = Handlebars.compile( $("#stateList").html() );
+		
+
 		$("#btnFilter").bind("click", {that: this }, this.setFilter);
 		$("#btnRefresh").bind("click", {that: this }, this.setData);
 		$("#filterNew").bind("change",{that:this}, this.setNew );
