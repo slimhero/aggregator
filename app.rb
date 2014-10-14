@@ -27,7 +27,8 @@ class App < Sinatra::Base
 	set :root, File.join(File.dirname(__FILE__), '..')
 	set :public_folder, File.dirname(__FILE__) + '/assets'
 	#enable :static
-	set :server, %w[thin webrick]	
+	set :server, %w[thin webrick]
+	set :static_cache_control, [:public, :max_gae => 2678400 ]	
 	
 	set :query, DB.Query
 	set :struct, DB.Struct
