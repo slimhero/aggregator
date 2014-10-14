@@ -5,4 +5,6 @@ gem 'sqlite3'
 gem 'json'
 gem 'rufus-scheduler', '>=3.0.9'
 gem 'daemons'
+gem 'rake'
+gem 'thin'
 
