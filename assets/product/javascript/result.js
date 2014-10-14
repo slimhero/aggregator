@@ -72,21 +72,31 @@ app.RADataView = Backbone.View.extend({
 	model: app.RADataModel,
 	template: Handlebars.compile( $("#dataResult").html() ),
 	stateTemplate: Handlebars.compile( $("#stateList").html() ),
+	_state: 0,
+	mv: function( that ){
+		$( '#' + this.model.id + '>section>.state-toggle').on('show.bs.dropdown', {that: this}, function (e) {
+				if( e.data.that._state == 0 ){
+					e.data.that.prepareData();
+					e.data.that._state = 1;
+				}
+		});
+	},
 	appendToPage: function(){
 		this.$el.append( this.template( this.model.toJSON() ) );
-	  this.prepareData();
+	  //this.prepareData();
+		this.mv( this );
 	},
-	prepareData: function(){
+	prepareData: function( that ){
 		//this.$el.append( this.template( this.model.toJSON() ) );
 		//this.refresh();
 		
 		var stateCollection = app.states;
 		if( stateCollection.length > 0 ){
-			stateCollection.each( function(i){
+			  stateCollection.each( function(i){
 				this.$el.find("#" + this.model.id + " #states").append( this.stateTemplate( i.toJSON() ) );
 				var z = "#" + this.model.id + " .stateMenu[data='" + i.get("id") + "']";
 				//Unbind 
-				this.$el.find( z ).unbind();  
+			  this.$el.find( z ).unbind();  
 				//Bind
 				this.$el.find( z ).bind( 
 					'click',
@@ -100,6 +110,7 @@ app.RADataView = Backbone.View.extend({
 						}
 					}
 				);
+				
 			}, this);
 		}
 		$( "#"+this.model.id+ " #btnSaveChangedState" ).bind(
