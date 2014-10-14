@@ -75,12 +75,12 @@ app.PointView = Backbone.View.extend({
 		//this.model.fetch();
 		//this.render();
 	//},
-	events: {
+	//events: {
 		//'click .btnEdit': 'editModel',
-		'click #btnDel': 'deleteModel'//,
+		//'click #btnDel': 'deleteModel'//,
 		//"click #btnSave": "saveModel",
 		//"click #btnCancel": "cancelModel"
-	},
+	//},
 	//
 	initialize: function(){
 	  if( !this.model.get('id') ){
@@ -131,6 +131,7 @@ app.PointView = Backbone.View.extend({
 		$(that.$el.find( that.btnSave )).on("click", {entity: that}, that.saveModel );
 		$(that.$el.find( that.btnTest )).on("click", {entity: that}, that.test );
 		$(that.$el.find( that.btnCancel )).on("click", {entity: that}, that.cancelModel );
+		$(that.$el.find( that.btnDel )).on("click", {entity: that}, that.deleteModel );
 	},
 
 	test: function(e){
@@ -200,8 +201,18 @@ app.PointView = Backbone.View.extend({
 	  that.$( that.edit_mode ).addClass('hidden');
 		that.$( that.btnTest ).addClass('hidden');
 	},
-	deleteModel: function(){
-		window.alert("!");
+	deleteModel: function(e){
+	  var that = e.data.entity;
+		Backbone.sync( "delete", that.model, {
+			success: function( data, status ){
+				console.log( data);
+				console.log( status );
+			}
+		});
+		// Delete element
+		$('#panel'+ that.model.id).remove();
+
+		//window.alert("!");
 	},
 	saveModel: function(e){
 	  var that = e.data.entity;

@@ -59,7 +59,7 @@ module RestAPI
 
 		#Delete
 		delete "/api/points/:id" do
-			D_POINTS = "UPDATE SET v.STATE = 3 FROM SOURCEDATA v WHERE v.ID = ?;"
+			D_POINTS = "UPDATE SOURCEDATA SET STATE = 3 WHERE ID = ?;"
 			App.db.execute( D_POINTS, [params[:id]] )
 		end
 		
