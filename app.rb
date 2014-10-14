@@ -6,6 +6,7 @@ require 'sinatra/base'
 #require 'sinatra/reloader' #if development?
 require "sinatra/json"
 require "json/ext"
+require "erb"
 require_relative 'utils'
 require_relative 'rest/points'
 require_relative 'rest/pointtime'
@@ -24,12 +25,14 @@ class App < Sinatra::Base
   set :db, db 
 	enable :sessions
 	#set :port, ENV["PORT"]||3000
-	set :root, File.join(File.dirname(__FILE__), '..')
+	#set :root, File.join(File.dirname(__FILE__), '..')
+	set :root, './'
 	set :public_folder, File.dirname(__FILE__) + '/assets'
 	#enable :static
 	set :server, %w[thin webrick]
 	set :static_cache_control, [:public, :max_gae => 2678400 ]	
-	
+	#set :views, settings.root + '/views'
+
 	set :query, DB.Query
 	set :struct, DB.Struct
 	set :fields, DB.Fields
@@ -66,7 +69,21 @@ class App < Sinatra::Base
 		if session[:islogin] && usr_small != nil && usr_small[:id].to_i == params[:id].to_i
 		 	puts "session!"
 		  if session[:wp] == 3	
-			  File.read( File.dirname(__FILE__)+"/assets/views/result_my.html")
+			  #File.read( File.dirname(__FILE__)+"/assets/views/result_my.html")
+				# Get aviable list of workplace 
+				wp = db.execute( DB.Query[:USER_WP_LIST], [usr_small[:id]] ) 
+			  # Get list of source
+				#points = db.execute( DB.Query[:POINTS_Q_S] )
+			  	
+				erb :result, :layout => :base, :locals => {
+					# User name for page
+					:user_name => usr_small.fio,
+					# Workplace list
+					:user_wp => wp
+					#,
+					# Source
+					#:points => points
+				}
 			elsif session[:wp] == 1
 				File.read( File.dirname(__FILE__)+"/assets/views/points_my.html")
 			elsif session[:wp] == 2

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>realty Helper</title>
+    <link href="/myLB/css/application.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/myLB/img/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+		<meta charset="utf-8">
+<!-- Templates -->
+<script type="text/x-handlebars" id="dataResult">
+<section class="search-result" id="{{id}}">
+	<small class="pull-right"><a href="{{link}}" target="_blank">{{source}}</a></small>
+	<h4>{{square}}</h4>
+  <section class="text-warning">
+		<span class="label label-danger pull-right">{{price}}</span>
+		<span class="label label-info">{{{phone}}}</span>
+  </section>
+  <div class="row">
+		<div class="col-md-5">
+			<strong>Местоположение:</strong>
+			<p>{{subway}}</p>
+		</div>
+		<div class="col-md-5">
+			<strong>Описание:</strong>
+	  	<p>{{others}}</p>
+		</div>
+	</div>
+	<section>
+		<small>
+			{{operdate}};
+			<!--
+			Прямая ссылка:
+			<a href="{{link}}">link</a>;
+			-->
+			Источник:
+			<a href="{{page}}">source</a>;
+			Пользователь:<b class="text-primary">{{user}}</b>;
+		</small>
+		<div class="btn-group btn-input pull-right state-toggle">
+			<button type="button" class="btn btn-default btn-xs" id="changedState">{{state}}<!--Изменить состояние--></button>
+  		<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+    		<span class="sr-only">Toggle Dropdown</span>
+			</button>
+  		<ul class="dropdown-menu" role="menu" id="states">
+ 			</ul>
+			<button class="btn btn-primary btn-xs" type="button" id="btnSaveChangedState"><i class="fa fa-pencil"></i></button>
+		</div>
+	</section>
+</section>
+</script>
+
+<script type="text/x-handlebars" id="stateList">
+	<li><a href="#" data="{{id}}" class="stateMenu" >{{name}}</a></li>
+</script>
+
+<script type="text/x-handlebars" id="wp">
+	<li role="presentation" class="wp-item-new"> 
+	  <a class="link" href="javascript:doPost('/api/setwp/{{id}}')">
+			<i class="fa"></i>
+			{{wp}}
+		</a>
+	</li>
+</script>
+
+</head>
+  <body class="background-dark">
+  <div class="logo">
+    <h4><a href="none">realty <strong>Helper</strong></a></h4>
+  </div>
+  <div class="wrap">
+    <header class="page-header">
+        <div class="navbar col-md-10">
+					<ul class="nav navbar-nav navbar-right pull-right">
+						<li class="hidden-xs">
+							<h5 id="userFIO"><%= user_name %></h5>
+						</li>
+          	<li class="hidden-xs">
+							<a id="wps" 
+									href="special_search.html#"
+									class="dropdown-toggle"
+									data-toggle="dropdown"
+                  title="Workplace">
+              	<i class="fa fa-cog"></i>
+							</a>
+							<ul id="wps-menu" 
+								class="dropdown-menu messages" 
+								role="menu"
+								role="tooltip"
+								class="popover">
+                <% for item in user_wp %>
+	                <li role="presentation" class="wp-item-new"> 
+	                  <a class="link" href="javascript:doPost('/api/setwp/<%=item[0]%>')">
+			                <i class="fa"></i>
+			                <%= item[1] %>
+		                </a>
+	                </li>       
+                <% end %>
+							</ul>
+            </li>
+            <li class="hidden-xs">
+							<a href="/logout">
+								<i class="fa fa-sign-out"></i>
+							</a>
+						</li>
+          </ul>
+        </div>
+    </header>
+    <div class="content container">
+        <%= yield %>
+
+    </div>
+    <div class="loader-wrap hiding hide">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+  </div>
+
+  <!-- jquery and friends -->
+  <script src="/jquery/jquery-2.1.1.min.js"> </script>
+  <!--backbone and friends -->
+  <script src="/underscore/underscore-min.js"></script>
+  <script src="/backbone/backbone-min.js"></script>
+  <!--<script src="/backbone/backbone.paginator.js"></script>-->
+  <script src="/handlebars/handlebars-v1.3.0.js"></script>
+
+  <!-- bootstrap default plugins -->
+  <script src="/myLB/lib/bootstrap/transition.js"></script>
+  <script src="/myLB/lib/bootstrap/collapse.js"></script>
+  <script src="/myLB/lib/bootstrap/alert.js"></script>
+  <script src="/myLB/lib/bootstrap/tooltip.js"></script>
+  <script src="/myLB/lib/bootstrap/popover.js"></script>
+  <script src="/myLB/lib/bootstrap/button.js"></script>
+  <script src="/myLB/lib/bootstrap/dropdown.js"></script>
+  <script src="/myLB/lib/bootstrap/modal.js"></script>
+  <script src="/myLB/lib/bootstrap/tab.js"> </script>
+
+  <script src="/product/javascript/result.js"></script>
+</body>
+</html>

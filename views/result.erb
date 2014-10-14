@@ -1,0 +1,82 @@
+        <div class="row">
+					<div class="col-md-10">
+						<h2 class="page-title">Search Results <small>Search result and form</small>							
+								<div class="pull-right">
+									<button class="btn btn-default btn-xs" type="button" id="btnRefresh">
+										<i class="fa fa-refresh"></i> Обновить</button>
+									<button class="btn btn-default btn-xs" data-toggle="collapse" data-target="#filterPlace" type="button">
+										<i class="eicon-search"></i> Фильтрация</button>
+								</div>
+						</h2>
+          </div>
+				</div>
+				
+				<!-- Types -->
+				<div class="row margin-bottom text-align-left">
+					<div class="col-md-10">
+						<div data-toggle="buttons">
+							<label class="btn btn-inverse btn-lg">
+								<input id="filterNew" type="radio" name="options">
+								<i class="eicon-info"></i>
+								New
+							</label>
+							<label class="btn btn-inverse btn-lg">
+								<input id="filterMy" type="radio" name="options">
+								<i class="fa fa-file-o"></i>
+								My
+							</label>
+							<label class="btn btn-inverse btn-lg">
+								<input id="filterArchive" type="radio" name="options">
+								<i class="fa fa-file-o"></i>
+								Archive
+							</label> 
+						</div>
+					</div>
+				</div>
+
+				<!-- Filtration -->
+				<div class="row">
+					<div class="col-md-10 collapse" id="filterPlace">
+						<section class="widget">
+							<header>
+              	<h4><i class="eicon-search"></i> Filters</h4>
+							</header>
+							<div class="body">
+								<form class="form-horizontal label-left">
+									<fieldset>
+										<div class="control-group">
+                    	<label for="prefix" class="control-label col-sm-2">Состояние</label>
+											<div class="controls form-group">
+												<select id="filterState">
+													<option key="0">Все</option>
+												</select>
+											</div>
+										</div>
+										<div class="control-group">
+                    	<label for="prefix" class="control-label col-sm-2">Источник</label>
+                      <div class="controls form-group">
+												<select id="filterSource">
+													<option key="0">Все</option>
+												</select>	
+											</div>
+										</div>
+										<div class="btn-input pu2ll-right">
+											<button type="button" class="btn btn-default btn-xs" id="btnFilter">Применить</button>
+										</div>
+									</fieldset>
+								</form>
+							</div>
+						</section>
+					</div>
+				</div>
+				<!-- Result -->
+        <div class="row">
+            <div class="col-md-10">
+                <section class="widget padding-increased">
+										<div class="body no-margin">
+												<div id="results">
+											  </div>
+                    </div>
+                </section>
+            </div>
+        </div>
