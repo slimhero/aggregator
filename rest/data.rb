@@ -63,5 +63,24 @@ module RestAPI
 				)
 			end
 		end
+
+		get "/api/data/limit/:limit/:offset" do
+			results = []
+			usr_small = session[:usr_small]
+			if session[:islogin] && usr_small != nil
+				q = ""
+				if params[:offset]	== 0 
+					q = App.query[:DATA_Q_LIM1]
+				else
+					q = App.query[:DATA_Q_LIM2]
+				end if
+
+				Data = App.struct[:DATA_ID]
+				App.db.execute( q, [usr_small[:id],params[:limit], params[:offset]] ) do |data|
+					results.push( data[0] )
+				end
+			end
+			json results	
+		end
 	end
 end
