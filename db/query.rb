@@ -60,13 +60,16 @@ module DB
 		:link,	:page,   :operdate, :source,
 		:user,	:userid, :state,    :stateid	
 	)
+	STRUCT[:DATA_ID] = Struct.new( :id )
 	QUERY[:DATA_Q] = "SELECT s.ID,s.MSGID,s.ROOM,s.SQUARE,s.PRICE,s.PHONE,s.SUBWAY,s.OTHERS,s.LINK,s.PAGE,s.OPERDATE,s.SOURCE,s.USER,s.USERID,s.STATE,s.STATEID FROM V_Data s;"
 	QUERY[:DATA_Q_U] = "SELECT s.ID,s.MSGID,s.ROOM,s.SQUARE,s.PRICE,s.PHONE,s.SUBWAY,s.OTHERS,s.LINK,s.PAGE,s.OPERDATE,s.SOURCE,s.USER,s.USERID,s.STATE,s.STATEID FROM V_Data s WHERE s.USERID IN ( 1, ?);"
 	QUERY[:DATA_Q_ID] = "SELECT s.ID,s.MSGID,s.ROOM,s.SQUARE,s.PRICE,s.PHONE,s.SUBWAY,s.OTHERS,s.LINK,s.PAGE,s.OPERDATE,s.SOURCE,s.USER,s.USERID,s.STATE,s.STATEID FROM V_Data s WHERE s.ID = ?;"
 	QUERY[:DATA_U_STATE] = "UPDATE RAData SET STATE = ? WHERE ID = ?;"
 	QUERY[:DATA_U_USER] = "UPDATE RAData SET USER = ? WHERE ID = ?;"
 	QUERY[:DATA_Q_CHK] = "SELECT COUNT(s.MSGID )FROM RAMSGID s WHERE s.MSGID = ? AND s.SOURCE = ?;"
-	
+	QUERY[:DATA_Q_LIM1] = "SELECT v.ID FROM V_DATA_ID v WHERE v.USERID IN ( 1, ? ) LIMIT ? ;"
+	QUERY[:DATA_Q_LIM2] = "SELECT v.ID FROM V_DATA_ID v WHERE v.USERID IN ( 1, ? ) LIMIT ? OFFSET ?;"
+
 	#######################################
 	# STATE                               #
 	#######################################
