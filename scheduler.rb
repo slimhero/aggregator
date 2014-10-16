@@ -64,7 +64,7 @@ module Schedule
 								DB.Fields, 
 								pathdata, 
 								forimg, 
-								true 
+								false 
 							)
 						end
 					end
