@@ -1,4 +1,8 @@
 var app = app || {};
+app.opt = app.opt || {};
+app.opt.next = 0;
+app.opt.count = 50;
+
 
 // history.start() must be executed after all modules have been registered which,
 // depending on the lumbar config, might not be at this time.
@@ -216,8 +220,10 @@ app.FullView = Backbone.View.extend({
 
 		app.collData = new app.collRAData();
 		app.collData.on( "sync", this.setCollection, app.collData );
-		app.collData.fetch();
-	
+		//app.collData.fetch();
+		//app.collData.on( "add", this.setCollection, app.collData );
+		
+		this.nextData();
 		app.templateState = Handlebars.compile( $("#stateList").html() );
 		
 
@@ -226,8 +232,37 @@ app.FullView = Backbone.View.extend({
 		$("#filterNew").bind("change",{that:this}, this.setNew );
 		$("#filterMy").bind("change", {that: this}, this.setMy );
 		$("#filterArchive").bind("change", {that: this}, this.setArchive );
+		// Much more records
+		$("#btnNext").bind( "click", this.nextData );
+
 		this.render();
 	},
+	//
+	nextData: function(){
+		$("#loader").removeClass('hide');
+		$.get( "/api/data/limit/" + app.opt.count +"/"+app.opt.next, function(data){
+			var len = data.length;
+  		var idx = 0;
+			_.each( data, function(item){
+    		$.ajax({
+				  	context: this, 
+						type: "get", 
+						url: ("/api/data/" + item)
+        })
+			  .done( function(model){
+        	idx = idx + 1;
+      		app.collData.add( model );		
+					if( idx == len ){
+						app.full.setCollection( app.collData );
+						$("#loader").addClass('hide');
+						app.opt.next = app.opt.next + app.opt.count;
+					}
+    		}
+			), this });
+  	}, 'json');
+	},
+
+	
 	// Set collection for view
 	setCollection: function( items ){
 		// From old version
@@ -372,6 +407,8 @@ app.FullView = Backbone.View.extend({
 		);
 	}
 });
+
+
 
 
 $(document).ready(function() {
