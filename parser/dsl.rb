@@ -190,8 +190,8 @@ end
 #end
 #x = Dsl.new( './test/test.rb' )
 #x.output
-x = Dsl.new( './test/irr.rb' )
-puts x.list
+#x = Dsl.new( './test/irr.rb' )
+#puts x.list
 #puts x.list.count
 #z = DSL.new( "site 'http://www.ya.ru'" )
 #z.list
