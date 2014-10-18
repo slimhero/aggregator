@@ -111,15 +111,7 @@ app.UsersView = Backbone.View.extend({
 			if( user.id == -1 ){
 				Backbone.sync( "create", user, { 
 					success: function(model,response){
-						console.log( 'model' );
-						console.log( model[0] );
-						console.log( 'response' );
-						console.log( response );
-
-						//e.data.that.collection.add( model );
-						//e.data.that.setUserData( model );
 						e.data.that.addUser( e.data.that, new app.UserModel( model[0] ) );
-						
 					},
 					error: function( model, response ){
 						window.alert( response );
@@ -129,18 +121,6 @@ app.UsersView = Backbone.View.extend({
 				user.save();
 				e.data.that.addUser( e.data.that, user );
 			}
-			/*
-			// Add model to collection 
-			e.data.that.collection.add( user );
-	
-			e.data.that.setUserData( user );
-
-			// Close modal window
-			$("#addUser").modal( 'hide' );
-
-			// Clear data
-			e.data.that.clearForm();
-			*/
 		}
 	},
 	clearForm: function(){

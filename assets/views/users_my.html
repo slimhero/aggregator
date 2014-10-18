@@ -102,14 +102,14 @@
 </form>
 </script>
 <script type="text/x-handlebars" id="idUserItem">
-<tr>
+	<tr id="{{id}}">
 	<td class="col-md-3">{{lastname}}</td>
 	<td>{{{name}}}</td>
 	<td>{{{secondname}}}</td>
 	<td>{{{login}}}</td>
 	<td>{{{operdate}}}</td>
-	<td>{{{state}}}</td>
-	<td>{{{line}}}</td>
+	<td><span class="label label-info">{{{state}}}</span></td>
+	<td><button id="{{id}}" class="btn btn-inverse btn-sm set-change-wp" data-target="#addWP" data-toggle="modal">set/change</button></td>
 </tr>
 </script>
 
@@ -171,14 +171,14 @@
 									<div id="users">
 										<div class="actions">
 											<button type="button" id="btnUserAdd" class="btn btn-xs btn-inverse" data-target="#addUser" data-toggle="modal">
-												<i class="eicon-plus-circled"></i> Add
+												<i class="eicon-plus-circled"></i> Add user
 											</button>
 											<div id="addUser" class="modal fade" style="display:none;" aria-hidden="true" aria-labelledby="userModalLabel" role="dialog">
 												<div class="modal-dialog">
 													<div class="modal-content">
 														<div class="modal-header">
 															<button class="close" aria-hidden="true" data-dismiss="modal" type="button">×</button>
-															<h4 id="userModalLabel" class="modal-title"><i class="fa fa-user"></i> Add user <small>(default password is qw12er34)</small></h4>
+															<h4 id="userModalLabel" class="modal-title"><i class="fa fa-user"></i> Add user <small>(default password is <b>qw12er34</b>)</small></h4>
 														</div>
 														<div class="modal-body">
 															<form id="formUser" class="form-horizontal label-left">
@@ -239,6 +239,21 @@
 														</div>
 													</div>
 												</div>
+											</div>	
+											<!---->
+											<div id="addWP" class="modal fade" role="dialog" aria-labelledby="addWPModalLabel" aria-hidden="true" style="display:none;">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+															<button class="close" type="button" data-dismiss="modal" aria-hidden="true">×</button>
+															<h4 id="appWPModalLabel" class="modal-title">
+																<i class="fa fa-user"></i> Set/change workplace <small></small>
+															</h4>
+														</div>
+														<div class="modal-body"></div>
+														<div class="modal-footer"></div>
+													</div>
+												</div>	
 											</div>	
 										</div>
 										<table class="table table-hover table-striped">
