@@ -137,5 +137,13 @@
   <script src="/myLB/lib/bootstrap/tab.js"> </script>
 
   <script src="/product/javascript/result.js"></script>
+  <script type="text/javascript">
+    function doPost( url ) {
+	    $.post( url )
+		    .done( function(data){
+			    location.reload();
+		  });
+    };
+  </script>
 </body>
 </html>
