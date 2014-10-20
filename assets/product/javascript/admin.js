@@ -146,7 +146,7 @@ app.PointView = Backbone.View.extend({
 				label: that.$el.find( that.label ).val()
 		};
 		$.post( 
-		    "api/points/test/"+id, 
+		    "/api/points/test/"+id, 
 				JSON.stringify(z),
 				'json'
 		)
