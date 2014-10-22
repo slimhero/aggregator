@@ -7,8 +7,6 @@ class Dsl
 		@file = cfgfile
 		@isTest = trace
 		# initialize vars
-		#@agent = Mechanize.new
-		#@hash = Hash.new
     @isRun = false
     if isRun == true
       @isRun = true
@@ -93,6 +91,7 @@ class Dsl
 		begin
 			@site = value
 			@html = Nokogiri::HTML(@agent.get( @site ).body.to_s )
+      #self.out "#{@html}"
 		rescue Exception => e
 			self.out "Error on site #{e.message}"
 			@isNotError = false

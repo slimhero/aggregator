@@ -14,7 +14,16 @@ parse_list "div[class='adds_cont clear']>div[class='add_list add_type4 ']" do |i
 	save_as url, dest
 	# Так как файл на жестком диске а не в базе
 	# формируем tag img
-	phone = "<img src='#{dest}>"
+	#phone = "<img src='#{dest}>"
+	begin
+	  cmdImg2Text = "gocr -i #{@code + dest} -C '1234567890-+()'"
+	  phone = %x(#{cmdImg2Text})
+	rescue
+	  phone = img dest
+	end
+	if phone.empty? or phone.nil?
+	  phone = img dest
+	end
 	# Заполняем поля структуры
 	fields :ID, id
 	fields :ROOM, 1

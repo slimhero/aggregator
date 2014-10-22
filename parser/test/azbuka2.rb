@@ -1,12 +1,12 @@
 agent_alias "Mac Safari"
-site "http://rent.azbuka.ru/?SORT=&DESC=&PRMIN=&PRMAX=&CUR=0&ARMIN=&ARMAX=&ROOMS[1]=Y&FLMIN=&FLMAX=#filter"
+site "http://rent.azbuka.ru/?SORT=&DESC=&PRMIN=&PRMAX=&CUR=0&ARMIN=&ARMAX=&ROOMS[2]=Y&FLMIN=&FLMAX=#filter"
 counter = 0
 
 parse_list 'table>tr' do |i|
   if counter > 0
     id = i.xpath( '//td[@class="photo"]/a/@href' ).to_s.gsub('/','')
     fields :ID, id
-	  fields :ROOM, 1
+	  fields :ROOM, 2
     fields :PRICE, i.xpath( '//td[@class="price"]/a/text()' ).to_s
    
     metro = i.xpath( '//td[@class="metro"]/a/text()').to_s.gsub('(','').gsub(')','')
