@@ -1,6 +1,7 @@
 class Dsl
 	require 'mechanize'
 	require 'nokogiri'
+  require 'logger'
 	# Class initialization
   def initialize( cfgfile, trace = false, isRun = true )
 		@file = cfgfile
@@ -8,8 +9,11 @@ class Dsl
 		# initialize vars
 		#@agent = Mechanize.new
 		#@hash = Hash.new
+    @isRun = false
+    if isRun == true
+      @isRun = true
+    end
 		self.init
-
 		if isRun == true
 			self.run
 		end
@@ -20,9 +24,18 @@ class Dsl
 		@code = ""
 		@forimg = ""
 		@isNotError = true
+    #@log = Logger.new( './debug.log' )
+    #@log.level = Logger::DEBUG
+    #@log = Logger.new( STDOUT )
 
 		@hash = Hash.new
 		@agent = Mechanize.new
+#    { |a|
+#      if @isRun 
+#        a.log = @log
+#      end
+#    }
+    @agent.keep_alive = false
 	end
 
 	def run
@@ -70,7 +83,11 @@ class Dsl
 		@agent.user_agent_alias = value#'Mac Safari' 
 	end
 
-	# open site and download page
+  def proxy( host, port )
+    @agent.set_proxy( host, port) 
+  end
+
+	# open site and download page 
 	def site value
 		self.out "site #{value}"
 		begin
@@ -92,6 +109,7 @@ class Dsl
 
 	# parse list using css selectors
 	def parse_list( css, &block )
+    self.out "parse #{css}"
 		if @isNotError
 			#puts "parse_list"
 			# check block
@@ -122,10 +140,27 @@ class Dsl
 				end
 	  	# if we dont havee a block
 			else
+        self.out @html.css( css )
 				@list = @html.css( css )
 			end
 		end
+    self.out "   done"
 	end
+
+  def to_next( url, &block )
+    self.out "parse #{url}"
+		if @isNotError
+			#puts "parse_list"
+			# check block
+			if block_given?
+        next_page = Nokogiri::HTML( @agent.get( url ).body.to_s )
+        #if !next_page.empty?
+          block.call( next_page )
+        #end
+      end
+    end
+    self.out "   done"
+  end
 	
 	# function(command for DSL) to fill @hash in file descriptor
 	def fields( name, value )
@@ -157,6 +192,17 @@ class Dsl
 		self.out "    :#{to}"
 		return "<img src='#{to}'>"
 	end
+
+  def post( url, params, &block )
+    self.out "get"
+      i = @agent.post( url , params )
+    puts "#{i}"
+      if block_given?
+        block.call( i )
+      end
+    self.out "get finished"
+  end
+
 	# Return @list
 	def list
 		return @list
@@ -179,19 +225,18 @@ class Dsl
 			#str = eval "puts src"
 			@trace.push( "trace = #{src}" )
 		end
+    #@log.debug "#{src}"
 	end
+
+  def log( str )
+    #@log.info str
+    nil
+  end
 
 	def getOutput
 		@trace
 	end
 end
 
-#class DSL < ParserDSL
-#end
-#x = Dsl.new( './test/test.rb' )
-#x.output
-#x = Dsl.new( './test/irr.rb' )
-#puts x.list
-#puts x.list.count
-#z = DSL.new( "site 'http://www.ya.ru'" )
-#z.list
+#x = Dsl.new( './test/test.rb')
+
